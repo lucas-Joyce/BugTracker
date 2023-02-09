@@ -1,13 +1,9 @@
 # Introduction
 > ## Purpose
-> Bug tracking is the process of logging and monitoring bugs or errors during software testing. 
-> It is also referred to as defect tracking or issue tracking. 
-> Large systems may have hundreds or thousands of defects. 
-> Each needs to be evaluated, monitored and prioritized for debugging.
+> Bug tracking is an exciting process of discovering and fixing errors in software! It's like a thrilling treasure hunt where developers are on a mission to uncover and remove any pesky bugs. Finding errors in complex software systems can be challenging, but it's also incredibly rewarding to see a project come to life after all the bugs have been eliminated. With the right bug tracking tools, teams can ensure that software is working as intended to provide a seamless user experience.
 >
 > ## Document Conventions
-> A bug tracker is a software development system used to document the life cycle of bugs. 
-> As a result, bug tracking describes the structured process from detection, tracking, and monitoring to the elimination of bugs, defects, and other problems.
+> A bug tracker is an essential tool for any software development team, as it helps document the life cycle of any bugs that are encountered throughout the development process. With a bug tracker, teams can detect, track, and monitor any bugs, defects, or other issues that arise, and then work to eliminate them.
 >
 > ## Scope
 > &nbsp;  *In Scope* <br>
@@ -16,23 +12,15 @@
 > &nbsp;  &nbsp;  external system pull request
  # Product Description
 > ## Product Perspective
->  A good bug report should contain only one bug and be clear and concise yet informationally dense. <br>
->  It should contain environment details and user steps that allow the developer to reproduce the bug on his side. <br>
->  Without being able to reproduce the bug, developers are essentially stumbling in the dark.
+> A good bug report should be concise yet informationally dense, and should only contain one bug. In addition, it should include details of the environment and user steps that would allow the developer to reproduce the bug on their own. Reproducing the bug is essential to debugging, as it ensures the developer is not stumbling in the dark. By providing this information, teams can ensure their bug reports are as effective as possible.
 > ## Product Feature
-> A user-friendly interface with customizable fields for gathering pertinent information about the bug. <br>
-> It should include custom fields such as <br> 
->  &nbsp;  &nbsp;  *text*, <br>
->  &nbsp;  &nbsp;  *drop-down lists*, <br>
->  &nbsp;  &nbsp;  *checkboxes*, <br>
-> where users can easily input the bug environment, <br>
->  &nbsp;  &nbsp;  *module*, <br>
->  &nbsp;  &nbsp;  *severity*, <br>
->  &nbsp;  &nbsp;  etc.<br>
+> A user-friendly interface is essential for a successful bug tracker, and should include customizable fields for gathering pertinent information about the bug. 
+> These fields can include text, drop-down lists, checkboxes and more, allowing users to easily input the bug environment, module, severity, and other important details. 
+> By having these fields available, users can ensure their bug reports are as effective as possible and can be easily tracked and monitored.
 > ### User Types
-> This is normal - anyone can log a bug. <br> 
-> The team decides which bugs are in scope for the project and which need to go into the main backlog. <br> 
-> The team decides which bugs get fixed when they're planning the next iteration/sprint/cycle.
+> Bug tracking is a collaborative process, and should involve multiple user types. 
+> Normal users can log a bug, while the team decides which bugs should be in scope for the project, which should go into the main backlog, and which should be addressed during the next iteration, sprint, or cycle. 
+> By involving multiple user types, teams can ensure that the bug tracking process is as efficient and effective as possible, leading to the highest quality of products.
 > ### Contraints
 > Required fields for the bug report. <br>
 > Note that the required fields of the bug report are: <br> 
@@ -59,11 +47,11 @@
 >> ### User Interface
 >>>
 >> ### Software Interface
->>>
+>>> use the visual studio
 >> ### Hareware Interface
->>>
+>>> basic computer with internet 
 >> ### Comunication Interface
->>> Apis
+>>> aips 
 > ## System Requirements
 >> ### Operating System
 >> ### Processor
@@ -85,3 +73,4 @@
 
 ## Credits
 > SRS - https://www.youtube.com/watch?v=rhXfrscZ_tM
+> MVP - https://blackboxofpm.com/mvpm-minimum-viable-product-manager-e1aeb8dd421
