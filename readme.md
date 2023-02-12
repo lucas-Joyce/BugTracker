@@ -42,7 +42,7 @@
 
  # System Feature
 > ## Function Requirements
->>
+>> ![Diagram](img-vid/intro-Diagram.pdf)
 > ## External Interface Requirements
 >> ### User Interface
 >>>
@@ -51,7 +51,7 @@
 >> ### Hareware Interface
 >>> basic computer with internet 
 >> ### Comunication Interface
->>> aips 
+>>> apis 
 > ## System Requirements
 >> ### Operating System
 >> ### Processor
@@ -72,5 +72,6 @@
 >> ### Entity Relationship Diagram
 
 ## Credits
-> SRS - https://www.youtube.com/watch?v=rhXfrscZ_tM
-> MVP - https://blackboxofpm.com/mvpm-minimum-viable-product-manager-e1aeb8dd421
+> SRS - https://www.youtube.com/watch?v=rhXfrscZ_tM <br> 
+> MVP - https://blackboxofpm.com/mvpm-minimum-viable-product-manager-e1aeb8dd421 <br> 
+>
