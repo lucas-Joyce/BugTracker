@@ -42,7 +42,7 @@
 
  # System Feature
 > ## Function Requirements
->> ![Diagram](img-vid/intro-Diagram.pdf)
+>> [![PDF Diagram](img-vid/intro-Dia001.png)](img-vid/intro-Diagram.pdf)
 > ## External Interface Requirements
 >> ### User Interface
 >>>
