@@ -22,6 +22,16 @@
 >
 >> ## *1.4* Overview
 >> Bug tracking is an exciting process of discovering and fixing errors in software! It's like a thrilling treasure hunt where developers are on a mission to uncover and remove any pesky bugs. Finding errors in complex software systems can be challenging, but it's also incredibly rewarding to see a project come to life after all the bugs have been eliminated. With the right bug tracking tools, teams can ensure that software is working as intended to provide a seamless user experience.
+>
+>> ## *1.5* Visual Diagram Overview
+>> [![PDF Diagram](img-vid/intro-Dia001.png)](img-vid/intro-Diagram.pdf)
+>> [![PDF Account](img-vid/account-Dia002.png)](img-vid/account-Diagram.pdf)
+>> [![PDF Account](img-vid/admin-Dia003.png)](img-vid/admin-Diagram.pdf)
+>> [![PDF Account](img-vid/tester-Dia004.png)](img-vid/tester-Diagram.pdf)
+>> [![PDF Account](img-vid/manager-Dia005.png)](img-vid/manager-Diagram.pdf)
+>
+>> ## *1.6* Visual UI Overview
+>> *insert Figma video here in 5 tables of stages in Minimum Varible Product.
 
 
 > # 2. System Features
@@ -97,6 +107,15 @@
 >>> - [ ] &nbsp; &nbsp; *2.* The components should interact with each other through the API.<br>
 >>> - [ ] &nbsp; &nbsp; *3.* The components should be designed to be modular and scalable for future updates and expansions.<br>
 >>
+>>> ### *3.1.3* Contraints Diagram
+>>> Required fields for the bug report. <br>
+>>> Note that the required fields of the bug report are: <br> 
+>>>  &nbsp;  &nbsp;  **Bug Summary**,  <br>
+>>>  &nbsp;  &nbsp;  **Severity**,  <br>
+>>>  &nbsp;  &nbsp;  **Steps to reproduce**,  <br>
+>>>  &nbsp;  &nbsp;  **Actual Result**,<br>
+>>>  &nbsp;  &nbsp;  **Expected Result**.<br>
+>>
 >> ## *3.2* Database Design
 >> - - - -
 >>> ### *3.2.1* Database Structure
@@ -110,138 +129,192 @@
 >>> - [ ] &nbsp; &nbsp; *3.* The tables should be designed to be modular and scalable for future updates and expansions.
 >>
 >>> ### *3.2.2* Tables and Fields
->>> - [ ] <details> <summary> *1.* Users Table </summary> <p> 
->>>     - id (primary key)<br>
->>>     - name<br>
->>>     - email<br>
->>>     - password<br>
->>>     - role (administrator, developer, tester)<br>
->>>     - created_at<br>
->>>     - updated_at<br>
->>>     </p>
->>>     </details>
 >>>
->>> - [ ] &nbsp; &nbsp; *2.* Bugs Table <details> <p>
->>>     - id (primary key)<br>
->>>     - title<br>
->>>     - description<br>
->>>     - status (open, closed, in progress)<br>
->>>     - assigned_to (foreign key referencing the Users table)<br>
->>>     - created_at<br>
->>>     - updated_at<br>
->>>     </p>
->>>     </details>
+>>> <details>
+>>> <summary> 1. User Table </summary>
+>>>
+>>>
+>>> ### User Table
+>>>
+>>> | Field Name | Description |
+>>> |------------|-------------|
+>>> | `id`       | Primary key |
+>>> | `name`     |             |
+>>> | `email`    |             |
+>>> | `password` |             |
+>>> | `role`     | Options: `administrator`, `developer`, `tester` |
+>>> | `created_at` |  |
+>>> | `updated_at` |  |
+>>>
+>>> </details>
+>>>
+>>> <details>
+>>> <summary> 2. Bugs Table </summary>
+>>>
+>>>
+>>> ### Bugs Table
+>>>
+>>> | Field Name | Description |
+>>> |------------|-------------|
+>>> | `id`       | Primary key |
+>>> | `title`     |             |
+>>> | `description`    |             |
+>>> | `status` | Options: `open`, `closed`, `in progress` |
+>>> | `assigned_to`     | `foreign key referencing the User table` |
+>>> | `created_at` |  |
+>>> | `updated_at` |  |
+>>>
+>>> </details>
 >>> 
->>> - [ ] &nbsp; &nbsp; *3.* Comments Table <details> <p> 
->>>     - id (primary key)<br>
->>>     - bug_id (foreign key referencing the Bugs table)<br>
->>>     - user_id (foreign key referencing the Users table)<br>
->>>     - comment<br>
->>>     - created_at<br>
->>>     - updated_at<br>
->>>     </p>
->>>     </details>
+>>> <details>
+>>> <summary> 3. Comments Table </summary>
 >>>
->>> - [ ] &nbsp; &nbsp; *4.* Media Table <details> <p>
->>>     - id (primary key)<br>
->>>     - bug_id (foreign key referencing the Bugs table)<br>
->>>     - type (image, video)<br>
->>>     - file_name<br>
->>>     - file_path<br>
->>>     - created_at<br>
->>>     - updated_at<br>
->>>     </p>
->>>     </details>
 >>>
->>> - [ ] &nbsp; &nbsp; *5.* Activity Log Table <details> <p>
->>>     - id (primary key)<br>
->>>     - user_id (foreign key referencing the Users table)<br>
->>>     - bug_id (foreign key referencing the Bugs table)<br>
->>>     - action (create, update, delete)<br>
->>>     - created_at<br>
->>>     </p>
->>>     </details>
+>>> ### Comments Table
+>>>
+>>> | Field Name | Description |
+>>> |------------|-------------|
+>>> | `id`       | Primary key |
+>>> | `bug_id`     | `foreign key referencing the Bugs table` |
+>>> | `user_id`    |  `foreign key referencing the Users table` |
+>>> | `comment` |  |
+>>> | `assigned_to` |  |
+>>> | `created_at` |  |
+>>> | `updated_at` |  |
+>>>
+>>> </details>
+>>> 
+>>> <details>
+>>> <summary> 4. Media Table </summary>
+>>>
+>>>
+>>> ### Media Table
+>>>
+>>> | Field Name | Description |
+>>> |------------|-------------|
+>>> | `id`       | Primary key |
+>>> | `bug_id`     | `foreign key referencing the Bugs table` |
+>>> | `type`    |  Options: `image`, `video` |
+>>> | `file_name` |  |
+>>> | `file_path` |  |
+>>> | `created_at` |  |
+>>> | `updated_at` |  |
+>>>
+>>> </details>
+>>> 
+>>> <details>
+>>> <summary> 5. Activity Log Table </summary>
+>>>
+>>>
+>>> ### Activity Log Table
+>>>
+>>> | Field Name | Description |
+>>> |------------|-------------|
+>>> | `id`       | Primary key |
+>>> | `bug_id`     | `foreign key referencing the Bugs table` |
+>>> | `user_id`    |  `foreign key referencing the Users table` |
+>>> | `action` | Options: `Create`, `Update`, `Delete` |
+>>> | `assigned_to` |  |
+>>> | `created_at` |  |
+>>>
+>>> </details>
+>>> <br>
+> # 4. Technical Requirements
+>> ## *4.1* Technology Stack
+>> - - - -
+>>> #### The bug tracking system will be developed using the following technologies: 
+>>> ### *4.1.1* Front-end:
+>>> - HTML 
+>>> - CSS 
+>>> - JavaScript 
+>>> - React.js
+>>
+>>> ### *4.1.2* Back-end:
+>>> - Node.js 
+>>> - Express.js
+>>
+>>> ### *4.1.3* Database:
+>>> - MySQL
+>>> - MongoDB.js
+>>
+>>> ### *4.1.4* Testing:
+>>> - Jest 
+>>> - Mocha
+>>
+>>> ### *4.1.5* Deploymemnt:
+>>> - Heroku
+>>
+>>> #### The system should be built using modular, scalable, and maintainable code to ensure the best performance and ease of development.
+>>> #### The system should be compatible with modern web browsers and mobile devices.
+>>><br>
+>> ## *4.2* Compatibility Requirements
+>> - - - -
+>>> ### *4.2.1* The bug tracking system must be compatible with the following operating systems:
+>>> - Windows 10
+>>> - MacOS 10.14 or later
+>>> - Ubuntu 20.04 or later
+>>
+>>> ### *4.2.2* The system must support the latest versions of the following web browsers:
+>>> - Google Chrome
+>>> - Mozilla Firefox
+>>> - Apple Safari
+>>> - Microsoft Edge
+>>
+>>> ### *4.2.3* The system must be accessible on both desktop and mobile devices, with responsive design.
+>>
+>>> ### *4.2.4* The system should have minimum hardware requirements:
+>>> - 4GB RAM
+>>> - Dual-core processor
+>>> - 500MB hard drive
+>>><br>
+>> ## 4.3 Security Requirements
+>>> *1.* The bug tracking system must use secure encryption for data transmission and storage.<br>
+>>> *2.* User authentication and authorization must be implemented to restrict access to the system to authorized users only.<br>
+>>> *3.* Passwords must be encrypted and securely stored in the database.<br>
+>>> *4.* The system must implement measures to prevent hacking, such as regular security audits and vulnerability scans.<br>
+>>> *5.* The system must have a disaster recovery plan in place in the event of a security breach.<br>
+>>> *6.* The system must comply with relevant data protection and privacy regulations, such as GDPR.<br>
+>>>
+
+> # 5. Non-Function Requirements
+>> ## *5.1* Performance Requirements
+>> - - - -
+>>> ### *5.1.1* Response Time 
+>>> &nbsp; *1.* The bug tracking system must have a response time of less than 2 seconds for all user actions. <br>
+>>> &nbsp; *2.* The system must be able to search and retrieve bug reports in less than 5 seconds.<br>
+>>> &nbsp; *3.* The system must be able to generate reports and statistics in real-time.<br>
+>>
+>>> ### *5.1.2* Load Time 
+>>> &nbsp; *1.* The system must be able to process and store a minimum of 1000 bug reports per day.<br>
+>>> &nbsp; *2.* The system must have a 99.9% uptime guarantee.<br>
+>>
+>> ## 5.2 Security Requirements
+>> - - - -
+>>> ### 5.2.1 Data Protection
+>>> *1.* The bug tracking system must securely store all user data and sensitive information.<br>
+>>> *1.* The system must use encryption to protect data both in transit and at rest.<br>
+>>> *1.* The system must allow users to control access to their own data, including the ability to delete it.<br>
+>>
+>>> ### 5.2.2 Threat Prevention
+>>> *1.* The bug tracking system must have mechanisms in place to detect and prevent unauthorized access attempts.<br>
+>>> *1.* The system must have robust input validation to prevent SQL injection and other common attacks.<br>
+>>> *1.* The system must regularly perform security audits and update its security measures as needed.<br>
+>>
+>> ## 5.3 Usability Requirements
+>> - - - -
+>>> ### 5.3.1 User Experience
+>>> *1.* The user interface of the bug tracking system must be intuitive and easy to use.<br>
+>>> *2.* The system must provide clear and concise feedback to users on all actions.<br>
+>>> *3.* The system must support a range of user roles, including reporters, developers, and managers.<br>
+>>
+>>> ### 5.3.2 Accessibility
+>>> *1.* The bug tracking system must comply with accessibility standards, such as WCAG 2.0.<br>
+>>> *2.* The system must be fully functional for users with disabilities, including keyboard-only navigation.<br>
+>>> *3.* The system must have adjustable text sizes and high-contrast options for visually impaired users.<br>
 >>
 
-
-
-
-
-
-
-
-
-
- # Product Description
-> ## Product Perspective
-> A good bug report should be concise yet informationally dense, and should only contain one bug. In addition, it should include details of the environment and user steps that would allow the developer to reproduce the bug on their own. Reproducing the bug is essential to debugging, as it ensures the developer is not stumbling in the dark. By providing this information, teams can ensure their bug reports are as effective as possible.
-> ## Product Feature
-> A user-friendly interface is essential for a successful bug tracker, and should include customizable fields for gathering pertinent information about the bug. 
-> These fields can include text, drop-down lists, checkboxes and more, allowing users to easily input the bug environment, module, severity, and other important details. 
-> By having these fields available, users can ensure their bug reports are as effective as possible and can be easily tracked and monitored.
-> ### User Types
-> Bug tracking is a collaborative process, and should involve multiple user types. 
-> Normal users can log a bug, while the team decides which bugs should be in scope for the project, which should go into the main backlog, and which should be addressed during the next iteration, sprint, or cycle. 
-> By involving multiple user types, teams can ensure that the bug tracking process is as efficient and effective as possible, leading to the highest quality of products.
-> ### Contraints
-> Required fields for the bug report. <br>
-> Note that the required fields of the bug report are: <br> 
->  &nbsp;  &nbsp;  **Bug Summary**,  <br>
->  &nbsp;  &nbsp;  **Severity**,  <br>
->  &nbsp;  &nbsp;  **Steps to reproduce**,  <br>
->  &nbsp;  &nbsp;  **Actual Result**,<br>
->  &nbsp;  &nbsp;  **Expected Result**.<br>
->
-> ## Assumptions
-> It helps testers function better, easily report and fix bugs. <br>
-> Testers can view and utilize all the information required to resolve issues, <br>
-> which enables faster development, verification, and releases of updated versions or even, <br>
-> feature fixes. Faster releases make happier customers.
-> ## Risks
-> Complications can arise out of confusion over descriptions, lack of information, tools that <br>
-> are overly cumbersome and require mandatory fields for which the user doesn't have the answers, <br>
-> and difficulty in reporting.
-
- # System Feature
-> ## Function Requirements
->> [![PDF Diagram](img-vid/intro-Dia001.png)](img-vid/intro-Diagram.pdf)
->> [![PDF Account](img-vid/account-Dia002.png)](img-vid/account-Diagram.pdf)
->> [![PDF Account](img-vid/admin-Dia003.png)](img-vid/admin-Diagram.pdf)
->> [![PDF Account](img-vid/tester-Dia004.png)](img-vid/tester-Diagram.pdf)
->> [![PDF Account](img-vid/manager-Dia005.png)](img-vid/manager-Diagram.pdf)
->> ### NOTE: this will update regularly. 
-> ## External Interface Requirements
->> ### User Interface
->>>
->> ### Software Interface
->>> use the visual studio
->> ### Hareware Interface
->>> basic computer with internet 
->> ### Comunication Interface
->>> apis 
-
-> ## System Requirements
->> ### Operating System
->> ### Processor
->> ### Ram
->> ### Browser
->> ### Devices
-
-> ## Non-Function Requirements
->> ### Performance
->> ### Security
->> ### Scalability
->> ### Compatibility
-
-> ## Models
->> ### Process Models
->> ### Function Decomposition
->> ### Use Case
->> ### Data Flow Diagram
->> ### Sequence Diagram
->> ### Entity Relationship Diagram
-
-> ## Appendices and Credits
->> SRS - https://www.youtube.com/watch?v=rhXfrscZ_tM <br> 
->> MVP - https://blackboxofpm.com/mvpm-minimum-viable-product-manager-e1aeb8dd421 <br> 
+>> ## *4.2* Appendices and Credits
+>> - - - -
+>>> SRS - https://www.youtube.com/watch?v=rhXfrscZ_tM <br> 
+>>> MVP - https://blackboxofpm.com/mvpm-minimum-viable-product-manager-e1aeb8dd421 <br> 
 >>
