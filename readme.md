@@ -29,6 +29,10 @@
 >> [![PDF Account](img-vid/admin-Dia003.png)](img-vid/admin-Diagram.pdf)
 >> [![PDF Account](img-vid/tester-Dia004.png)](img-vid/tester-Diagram.pdf)
 >> [![PDF Account](img-vid/manager-Dia005.png)](img-vid/manager-Diagram.pdf)
+>> [![PDF Account](img-vid/developer-Dia006.png)](img-vid/developer-Diagram.pdf)
+>> [![PDF Account](img-vid/customer-Dia007.png)](img-vid/customer-Diagram.pdf)
+>> [![PDF Account](img-vid/status-Dia008.png)](img-vid/status-Diagram.pdf)
+>> [![PDF Account](img-vid/tags&ids-Dia009.png)](img-vid/tags&ids-Diagram.pdf)
 >
 >> ## *1.6* Visual UI Overview
 >> *insert Figma video here in 5 tables of stages in Minimum Varible Product.
