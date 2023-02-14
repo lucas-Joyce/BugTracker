@@ -296,13 +296,13 @@
 >> - - - -
 >>> ### 5.2.1 Data Protection
 >>> *1.* The bug tracking system must securely store all user data and sensitive information.<br>
->>> *1.* The system must use encryption to protect data both in transit and at rest.<br>
->>> *1.* The system must allow users to control access to their own data, including the ability to delete it.<br>
+>>> *2.* The system must use encryption to protect data both in transit and at rest.<br>
+>>> *3.* The system must allow users to control access to their own data, including the ability to delete it.<br>
 >>
 >>> ### 5.2.2 Threat Prevention
 >>> *1.* The bug tracking system must have mechanisms in place to detect and prevent unauthorized access attempts.<br>
->>> *1.* The system must have robust input validation to prevent SQL injection and other common attacks.<br>
->>> *1.* The system must regularly perform security audits and update its security measures as needed.<br>
+>>> *2.* The system must have robust input validation to prevent SQL injection and other common attacks.<br>
+>>> *3.* The system must regularly perform security audits and update its security measures as needed.<br>
 >>
 >> ## 5.3 Usability Requirements
 >> - - - -
