@@ -33,6 +33,7 @@
 >> [![PDF Account](img-vid/customer-Dia007.png)](img-vid/customer-Diagram.pdf)
 >> [![PDF Account](img-vid/status-Dia008.png)](img-vid/status-Diagram.pdf)
 >> [![PDF Account](img-vid/tags&ids-Dia009.png)](img-vid/tags&ids-Diagram.pdf)
+>> [![PDF Account](img-vid/figma.001.png)](img-vid/figma.pdf)
 >
 >> ## *1.6* Visual UI Overview
 >> *insert Figma video here in 5 tables of stages in Minimum Varible Product.
