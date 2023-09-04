@@ -24,16 +24,16 @@
 >> Bug tracking is an exciting process of discovering and fixing errors in software! It's like a thrilling treasure hunt where developers are on a mission to uncover and remove any pesky bugs. Finding errors in complex software systems can be challenging, but it's also incredibly rewarding to see a project come to life after all the bugs have been eliminated. With the right bug tracking tools, teams can ensure that software is working as intended to provide a seamless user experience.
 >
 >> ## *1.5* Visual Diagram Overview
->> [![PDF Diagram](img-vid/intro-Dia001.png)](img-vid/intro-Diagram.pdf)
->> [![PDF Account](img-vid/account-Dia002.png)](img-vid/account-Diagram.pdf)
->> [![PDF Account](img-vid/admin-Dia003.png)](img-vid/admin-Diagram.pdf)
->> [![PDF Account](img-vid/tester-Dia004.png)](img-vid/tester-Diagram.pdf)
->> [![PDF Account](img-vid/manager-Dia005.png)](img-vid/manager-Diagram.pdf)
->> [![PDF Account](img-vid/developer-Dia006.png)](img-vid/developer-Diagram.pdf)
->> [![PDF Account](img-vid/customer-Dia007.png)](img-vid/customer-Diagram.pdf)
->> [![PDF Account](img-vid/status-Dia008.png)](img-vid/status-Diagram.pdf)
->> [![PDF Account](img-vid/tags&ids-Dia009.png)](img-vid/tags&ids-Diagram.pdf)
->> [![PDF Account](img-vid/figma.001.png)](img-vid/figma.pdf)
+>> [![PDF Diagram](./client/public/img-vid/intro-Dia001.png)](./client/public/img-vid/intro-Diagram.pdf)
+>> [![PDF Account](./client/public/img-vid/account-Dia002.png)](./client/public/img-vid/account-Diagram.pdf)
+>> [![PDF Account](./client/public/img-vid/admin-Dia003.png)](./client/public/img-vid/admin-Diagram.pdf)
+>> [![PDF Account](./client/public/img-vid/tester-Dia004.png)](./client/public/img-vid/tester-Diagram.pdf)
+>> [![PDF Account](./client/public/img-vid/manager-Dia005.png)](./client/public/img-vid/manager-Diagram.pdf)
+>> [![PDF Account](./client/public/img-vid/developer-Dia006.png)](./client/public/img-vid/developer-Diagram.pdf)
+>> [![PDF Account](./client/public/img-vid/customer-Dia007.png)](./client/public/img-vid/customer-Diagram.pdf)
+>> [![PDF Account](./client/public/img-vid/status-Dia008.png)](./client/public/img-vid/status-Diagram.pdf)
+>> [![PDF Account](./client/public/img-vid/tags&ids-Dia009.png)](./client/public/img-vid/tags&ids-Diagram.pdf)
+>> [![PDF Account](./client/public/img-vid/figma.001.png)](./client/public/img-vid/figma.pdf)
 >
 >> ## *1.6* Visual UI Overview
 >> *insert Figma video here in 5 tables of stages in Minimum Varible Product.
