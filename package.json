@@ -4,7 +4,12 @@
   "description": "bug tracking project",
   "main": "index.js",
   "scripts": {
-    "test": "\"test\": \"jest\""
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:client": "cd client && npm run dev",
+    "dev:server": "cd server && npm run dev",
+    "start:client": "cd client && npm start",
+    "start:server": "cd server && npm start",
+    "install-all": "npm install && cd client && npm install && cd ../server && npm install"
   },
   "repository": {
     "type": "git",
@@ -12,14 +17,17 @@
   },
   "keywords": [
     "React",
-    "Flask",
-    "MySQL",
-    "Python"
+    "Node",
+    "Express",
+    "MongoDB"
   ],
   "author": "Lucas Joyce",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/lucas-Joyce/BugTracker/issues"
   },
-  "homepage": "https://github.com/lucas-Joyce/BugTracker#readme"
+  "homepage": "https://github.com/lucas-Joyce/BugTracker#readme",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
 }
