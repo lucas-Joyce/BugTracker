@@ -11,16 +11,118 @@ table {
 }
 
 th, td {
-  border: 1px solid #ddd;
+  border: 1px solid var(--border);
   padding: 12px;
   text-align: left;
 }
 
 th {
-  background-color: #333;
-  color: white;
+  background-color: var(--header-bg);
+  color: var(--header-text);
 }
 
 tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: var(--bg-alt);
+}
+
+td button {
+  margin-right: 5px;
+  padding: 5px 10px;
+  font-size: 12px;
+  background-color: var(--btn-bg);
+  color: var(--header-text);
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+td button:hover {
+  background-color: var(--btn-bg-hover);
+}
+
+td button:last-child {
+  background-color: #d32f2f;
+}
+
+td button:last-child:hover {
+  background-color: #b71c1c;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.app-header h1 {
+  margin: 0;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.account-btn {
+  padding: 6px 14px;
+  background-color: var(--btn-bg);
+  color: var(--header-text);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.account-btn:hover {
+  background-color: var(--btn-bg-hover);
+}
+
+.logout-btn {
+  padding: 6px 14px;
+  background-color: #d32f2f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.logout-btn:hover {
+  background-color: #b71c1c;
+}
+
+/* Form inputs */
+form input,
+form select {
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  border-radius: 4px;
+  margin-right: 8px;
+}
+
+form button[type="submit"] {
+  background-color: var(--btn-bg);
+  color: var(--header-text);
+  border: none;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+form button[type="submit"]:hover {
+  background-color: var(--btn-bg-hover);
+}
+
+/* Inline edit select */
+td select {
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  border: 1px solid var(--border);
+  padding: 4px 6px;
+  border-radius: 3px;
 }

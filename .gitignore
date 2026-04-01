@@ -9,3 +9,8 @@ server/dist/
 
 # Environment
 .env
+server/.env
+client/.env
+
+# SSL certificates
+server/certs/

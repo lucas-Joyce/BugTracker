@@ -1,0 +1,263 @@
+.account-page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.account-loading {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-muted);
+}
+
+.account-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.account-header h2 {
+    margin: 0;
+}
+
+.back-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.back-btn:hover {
+    background-color: var(--bg-alt);
+}
+
+.account-error {
+    background-color: #ffebee;
+    color: #d32f2f;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    font-size: 13px;
+}
+
+.account-success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    font-size: 13px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .account-error { background-color: #4e1010; color: #ef9a9a; }
+    .account-success { background-color: #1b3a1f; color: #a5d6a7; }
+}
+
+/* Avatar card */
+.avatar-card {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px;
+    margin-bottom: 20px;
+}
+
+.avatar-card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.avatar-card-nickname {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--text);
+}
+
+.avatar-card-jobtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: var(--header-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    border: 3px solid var(--border);
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-initials {
+    color: var(--header-text);
+    font-size: 32px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.avatar-overlay {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0,0,0,0.55);
+    color: #fff;
+    text-align: center;
+    font-size: 11px;
+    padding: 4px 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.avatar:hover .avatar-overlay {
+    opacity: 1;
+}
+
+.photo-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 8px;
+}
+
+.delete-photo-btn {
+    background: none;
+    border: none;
+    color: #d32f2f;
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: 4px;
+    padding: 0;
+}
+
+.delete-photo-btn:hover {
+    text-decoration: underline;
+}
+
+/* Forms */
+.account-form {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px;
+    margin-bottom: 20px;
+}
+
+.account-form h3 {
+    margin: 0 0 20px 0;
+    font-size: 15px;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+}
+
+.account-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 14px;
+}
+
+.account-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.account-field label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.account-field input {
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--input-bg);
+    color: var(--input-text);
+    font-size: 14px;
+}
+
+.account-field input:focus {
+    outline: none;
+    border-color: var(--link);
+}
+
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper input {
+    width: 100%;
+    padding-right: 40px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.password-toggle:hover {
+    color: var(--text);
+}
+
+.account-field.readonly input {
+    background: var(--bg-alt);
+    color: var(--text-muted);
+    cursor: default;
+}
+
+
+.save-btn {
+    background-color: var(--btn-bg);
+    color: var(--header-text);
+    border: none;
+    padding: 9px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.save-btn:hover {
+    background-color: var(--btn-bg-hover);
+}
+
+.save-btn:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+}
+
+@media (max-width: 560px) {
+    .account-row {
+        flex-direction: column;
+    }
+}
