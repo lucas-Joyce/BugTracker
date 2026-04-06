@@ -1,12 +1,18 @@
 import { useState, useEffect } from 'react';
 import AuthPage from './components/AuthPage';
 import AccountPage from './components/AccountPage';
+import AdminDashboard from './components/AdminDashboard';
+import OwnerDashboard from './components/OwnerDashboard';
+import ForcePasswordChange from './components/ForcePasswordChange';
 import './App.css';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('authToken'));
-  const [currentUser, setCurrentUser] = useState(null);
-  const [view, setView] = useState('bugs'); // bugs | account
+  const [currentUser, setCurrentUser] = useState(() => {
+    const stored = localStorage.getItem('currentUser');
+    return stored ? JSON.parse(stored) : null;
+  });
+  const [view, setView] = useState('bugs'); // bugs | account | admin
   const [bugs, setBugs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
@@ -20,6 +26,7 @@ function App() {
     setCurrentUser(user);
     setToken(newToken);
     localStorage.setItem('authToken', newToken);
+    localStorage.setItem('currentUser', JSON.stringify(user));
   };
 
   const handleLogout = () => {
@@ -28,6 +35,7 @@ function App() {
     setBugs([]);
     setView('bugs');
     localStorage.removeItem('authToken');
+    localStorage.removeItem('currentUser');
   };
 
   const authHeaders = {
@@ -81,15 +89,43 @@ function App() {
 
   if (!isAuthenticated) return <AuthPage onLogin={handleLogin} />;
 
+  if (currentUser?.mustChangePassword) {
+    return (
+      <ForcePasswordChange
+        token={token}
+        onComplete={() => {
+          const updated = { ...currentUser, mustChangePassword: false };
+          setCurrentUser(updated);
+          localStorage.setItem('currentUser', JSON.stringify(updated));
+        }}
+      />
+    );
+  }
+
   if (view === 'account') {
     return (
       <AccountPage
         token={token}
         currentUser={currentUser}
-        onUserUpdate={(updated) => setCurrentUser({ ...currentUser, ...updated })}
+        onUserUpdate={(updated) => {
+          const merged = { ...currentUser, ...updated };
+          setCurrentUser(merged);
+          localStorage.setItem('currentUser', JSON.stringify(merged));
+        }}
         onBack={() => setView('bugs')}
       />
     );
+  }
+
+  if (view === 'admin') {
+    if (currentUser?.role === 'owner') {
+      return <OwnerDashboard token={token} onBack={() => setView('bugs')} />;
+    }
+    if (currentUser?.role === 'customer') {
+      return <AdminDashboard token={token} onBack={() => setView('bugs')} />;
+    }
+    setView('bugs');
+    return null;
   }
 
   if (loading) return <div>Loading...</div>;
@@ -100,6 +136,12 @@ function App() {
         <h1>Bug Tracker</h1>
         <div className="user-info">
           <span>Welcome, {currentUser?.username || 'User'}</span>
+          {currentUser?.role === 'owner' && (
+            <button onClick={() => setView('admin')} className="account-btn">Owner Panel</button>
+          )}
+          {currentUser?.role === 'customer' && (
+            <button onClick={() => setView('admin')} className="account-btn">Admin</button>
+          )}
           <button onClick={() => setView('account')} className="account-btn">My Account</button>
           <button onClick={handleLogout} className="logout-btn">Logout</button>
         </div>

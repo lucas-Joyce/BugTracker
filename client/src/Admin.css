@@ -1,0 +1,379 @@
+.admin-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 24px 16px;
+    font-family: sans-serif;
+}
+
+.admin-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.admin-header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.back-btn {
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.back-btn:hover { background: #f5f5f5; }
+
+.admin-error {
+    background: #fff0f0;
+    border: 1px solid #f5c6c6;
+    color: #c00;
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+}
+
+.admin-loading {
+    color: #888;
+    padding: 24px 0;
+}
+
+/* Slot counters */
+.slot-counters {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.slot-counter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fafafa;
+    font-size: 0.9rem;
+}
+
+.slot-counter.warning { border-color: #f0a500; background: #fffbf0; }
+.slot-counter.full    { border-color: #d9534f; background: #fff5f5; }
+
+.slot-label { font-weight: 600; }
+.slot-count { color: #555; }
+
+.slot-badge {
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.slot-badge.red {
+    background: #fdecea;
+    color: #c62828;
+}
+
+/* Invite buttons */
+.invite-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+
+.invite-btn {
+    padding: 8px 16px;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background: #333;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.invite-btn:hover:not(:disabled) { background: #555; }
+
+.invite-btn:disabled {
+    background: #ccc;
+    border-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Sections */
+.admin-section {
+    margin-bottom: 36px;
+}
+
+.admin-section h2 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #eee;
+}
+
+.section-count { color: #888; font-weight: normal; }
+
+.empty-state {
+    color: #999;
+    font-style: italic;
+    padding: 12px 0;
+}
+
+/* Table */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.admin-table th {
+    text-align: left;
+    padding: 8px 12px;
+    background: #f5f5f5;
+    border-bottom: 2px solid #ddd;
+    font-weight: 600;
+    color: #444;
+}
+
+.admin-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+.admin-table tr:last-child td { border-bottom: none; }
+
+.row-expired td { color: #aaa; }
+
+/* Status badges */
+.status-badge {
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.status-badge.active  { background: #e8f5e9; color: #2e7d32; }
+.status-badge.pending { background: #fff8e1; color: #f57f17; }
+.status-badge.revoked { background: #fce4ec; color: #880e4f; }
+.status-badge.expired { background: #eeeeee; color: #757575; }
+
+/* Role badges */
+.role-badge {
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    text-transform: capitalize;
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.role-badge.tester  { background: #f3e5f5; color: #6a1b9a; }
+.role-badge.viewer  { background: #e0f7fa; color: #00695c; }
+.role-badge.owner   { background: #e8eaf6; color: #283593; }
+
+/* Expiry indicators */
+.expiry-past  { color: #c62828; font-weight: 600; }
+.expiry-today { color: #e65100; font-weight: 600; }
+.expiry-soon  { color: #f57f17; font-weight: 600; }
+
+/* Action buttons */
+.action-buttons { display: flex; gap: 6px; }
+
+.btn-activate {
+    padding: 4px 10px;
+    border: 1px solid #2e7d32;
+    border-radius: 4px;
+    background: #fff;
+    color: #2e7d32;
+    cursor: pointer;
+    font-size: 0.82rem;
+}
+
+.btn-activate:hover:not(:disabled) { background: #e8f5e9; }
+
+.btn-revoke {
+    padding: 4px 10px;
+    border: 1px solid #c62828;
+    border-radius: 4px;
+    background: #fff;
+    color: #c62828;
+    cursor: pointer;
+    font-size: 0.82rem;
+}
+
+.btn-revoke:hover:not(:disabled) { background: #fdecea; }
+
+.btn-activate:disabled,
+.btn-revoke:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Pending banner */
+.pending-banner {
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-left: 4px solid #f9a825;
+    color: #5d4037;
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+}
+
+/* Action cell — multiple buttons side by side */
+.action-cell { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+
+.action-btn {
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    border: 1px solid;
+}
+
+.activate-btn { border-color: #2e7d32; background: #fff; color: #2e7d32; }
+.activate-btn:hover:not(:disabled) { background: #e8f5e9; }
+
+.revoke-btn { border-color: #c62828; background: #fff; color: #c62828; }
+.revoke-btn:hover:not(:disabled) { background: #fdecea; }
+
+.remind-btn { border-color: #1565c0; background: #fff; color: #1565c0; }
+.remind-btn:hover:not(:disabled) { background: #e3f2fd; }
+
+.action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.remind-sent { font-size: 0.82rem; color: #2e7d32; font-style: italic; }
+
+.admin-empty { color: #999; font-style: italic; padding: 12px 0; }
+
+/* Invite modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.modal {
+    background: #fff;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h2 { margin: 0; font-size: 1.1rem; }
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: #888;
+    line-height: 1;
+}
+
+.modal-body { padding: 20px; }
+
+.modal-error {
+    background: #fff0f0;
+    border: 1px solid #f5c6c6;
+    color: #c00;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+    font-size: 0.9rem;
+}
+
+.modal-field { margin-bottom: 14px; }
+.modal-field label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; color: #444; }
+.modal-field input, .modal-field select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+}
+
+.optional { font-weight: normal; color: #999; }
+.field-hint { font-size: 0.78rem; color: #999; margin-top: 4px; display: block; }
+
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
+
+.modal-btn-cancel {
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.modal-btn-submit {
+    padding: 8px 16px;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background: #333;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.modal-btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+.modal-btn-cancel:hover { background: #f5f5f5; }
+.modal-btn-submit:hover:not(:disabled) { background: #555; }
+
+/* Invite result */
+.invite-code-block {
+    background: #f5f5f5;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.invite-code-label { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; }
+.invite-code { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.03em; color: #222; }
+
+.copy-row { display: flex; gap: 6px; }
+.copy-row input { flex: 1; font-size: 0.82rem; color: #555; background: #fafafa; }
+
+.copy-btn {
+    padding: 8px 12px;
+    border: 1px solid #1565c0;
+    border-radius: 4px;
+    background: #fff;
+    color: #1565c0;
+    cursor: pointer;
+    font-size: 0.82rem;
+    white-space: nowrap;
+}
+
+.copy-btn:hover { background: #e3f2fd; }
+
+.invite-sent-note { font-size: 0.88rem; color: #2e7d32; margin: 10px 0 4px; }
+.invite-expiry { font-size: 0.8rem; color: #999; margin: 4px 0; }

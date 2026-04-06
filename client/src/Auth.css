@@ -206,3 +206,13 @@
     margin-top: 4px;
     display: block;
 }
+
+.auth-invite-notice {
+    background: #e3f2fd;
+    border: 1px solid #90caf9;
+    color: #1565c0;
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+    font-size: 0.9rem;
+}

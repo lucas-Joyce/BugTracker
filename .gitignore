@@ -13,4 +13,6 @@ server/.env
 client/.env
 
 # SSL certificates
-server/certs/
+server/certs/DEVLOG.md
+assetment.md
+DEVLOG.md

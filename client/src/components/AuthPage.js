@@ -40,6 +40,7 @@ function AuthPage({ onLogin }) {
     const [success, setSuccess] = useState('');
     const [loading, setLoading] = useState(false);
     const [pendingEmail, setPendingEmail] = useState('');
+    const [isPendingActivation, setIsPendingActivation] = useState(false);
 
     // Password visibility toggles
     const [showLoginPassword, setShowLoginPassword] = useState(false);
@@ -96,6 +97,7 @@ function AuthPage({ onLogin }) {
         setView(newView);
         setError('');
         setSuccess('');
+        setIsPendingActivation(false);
     };
 
     // Check username availability
@@ -118,6 +120,7 @@ function AuthPage({ onLogin }) {
         e.preventDefault();
         setError('');
         setSuccess('');
+        setIsPendingActivation(false);
         setLoading(true);
         try {
             const res = await fetch(`${API}/api/auth/login`, {
@@ -131,10 +134,34 @@ function AuthPage({ onLogin }) {
                 if (data.unverified) {
                     setPendingEmail(loginEmail);
                 }
+                if (data.pending) {
+                    setIsPendingActivation(true);
+                    setPendingEmail(loginEmail);
+                }
                 setLoading(false);
                 return;
             }
             onLogin(data.user, data.token);
+        } catch {
+            setError('Connection error. Is the server running?');
+        }
+        setLoading(false);
+    };
+
+    // Resend activation reminder to owner
+    const handleResendActivation = async () => {
+        setError('');
+        setSuccess('');
+        setLoading(true);
+        try {
+            const res = await fetch(`${API}/api/auth/resend-activation`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: pendingEmail })
+            });
+            const data = await res.json();
+            setSuccess(data.message);
+            setIsPendingActivation(false);
         } catch {
             setError('Connection error. Is the server running?');
         }
@@ -177,7 +204,7 @@ function AuthPage({ onLogin }) {
                     confirmPassword: signupConfirm,
                     name: signupName,
                     companyName: signupCompany,
-                    jobTitle: signupJobTitle
+                    jobTitle: signupJobTitle,
                 })
             });
             const data = await res.json();
@@ -333,9 +360,14 @@ function AuthPage({ onLogin }) {
                         <span className="auth-link" onClick={() => switchView('signup')}>
                             Set up New Account. <strong>Sign Up</strong>
                         </span>
-                        {pendingEmail && (
+                        {pendingEmail && !isPendingActivation && (
                             <span className="auth-link" onClick={() => setView('pending')}>
                                 Resend verification email
+                            </span>
+                        )}
+                        {isPendingActivation && (
+                            <span className="auth-link" onClick={handleResendActivation}>
+                                {loading ? 'Sending...' : 'Resend activation reminder'}
                             </span>
                         )}
                     </div>

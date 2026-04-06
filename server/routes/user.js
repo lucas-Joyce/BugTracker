@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const User = require('../models/User');
 const { verifyToken } = require('../middleware/auth');
+const { sendExtensionRequestEmail } = require('../config/email');
 
 const router = express.Router();
 
@@ -138,6 +139,63 @@ router.delete('/photo', verifyToken, async (req, res) => {
 
         res.json({ message: 'Photo removed' });
     } catch (err) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// POST /api/user/set-password — forced password change on first login
+router.post('/set-password', verifyToken, async (req, res) => {
+    try {
+        const { password, confirmPassword } = req.body;
+        if (!password || !confirmPassword) {
+            return res.status(400).json({ message: 'Both fields are required' });
+        }
+        if (password !== confirmPassword) {
+            return res.status(400).json({ message: 'Passwords do not match' });
+        }
+        if (password.length < 8) {
+            return res.status(400).json({ message: 'Password must be at least 8 characters' });
+        }
+
+        const user = await User.findById(req.user.userId);
+        if (!user) return res.status(404).json({ message: 'User not found' });
+        if (!user.mustChangePassword) {
+            return res.status(403).json({ message: 'No password change required' });
+        }
+
+        user.password = password;
+        user.mustChangePassword = false;
+        await user.save();
+
+        res.json({ message: 'Password updated. You can now use the app.' });
+    } catch (err) {
+        console.error('Set password error:', err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// POST /api/user/request-extension — viewer requests more time from their customer
+router.post('/request-extension', verifyToken, async (req, res) => {
+    try {
+        const viewer = await User.findById(req.user.userId).select('jobRole managedBy username status');
+        if (!viewer) return res.status(404).json({ message: 'User not found' });
+        if (viewer.jobRole !== 'viewer') {
+            return res.status(403).json({ message: 'Only viewers can request an extension' });
+        }
+        if (!viewer.managedBy) {
+            return res.status(400).json({ message: 'No managing customer found for your account' });
+        }
+
+        const customer = await User.findById(viewer.managedBy).select('email');
+        if (!customer) return res.status(404).json({ message: 'Managing customer not found' });
+
+        sendExtensionRequestEmail(customer.email, viewer.username).catch(err =>
+            console.error('Extension request email failed:', err.message)
+        );
+
+        res.json({ message: 'Extension request sent to your account manager.' });
+    } catch (err) {
+        console.error('Request extension error:', err);
         res.status(500).json({ message: 'Server error' });
     }
 });

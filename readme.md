@@ -45,18 +45,18 @@
 >> 
 >>> ### *2.1.1* User Registration
 >>> - [✔] &nbsp; &nbsp; *1.* Users should be able to register for the bug tracking system using their email address and password. <br>
->>> - [ ✔] &nbsp; &nbsp; *2.* Users should be able to provide their personal information such as name, company name, and job title during registration. <br>
->>> - [ ✔] &nbsp; &nbsp;  *3.* The system should validate the email address before allowing users to complete the registration process. <br>
->>> - [ ✔] &nbsp; &nbsp;  *4.* The system should send a confirmation email to users after successful registration. <br>
+>>> - [✔] &nbsp; &nbsp; *2.* Users should be able to provide their personal information such as name, company name, and job title during registration. <br>
+>>> - [✔] &nbsp; &nbsp;  *3.* The system should validate the email address before allowing users to complete the registration process. <br>
+>>> - [✔] &nbsp; &nbsp;  *4.* The system should send a confirmation email to users after successful registration. <br>
 >>
 >>> ### *2.1.2* User Login
->>> - [ ✔] &nbsp; &nbsp; *1.* Users should be able to log in to the bug tracking system using their email address and password.<br>
->>> - [✔ ] &nbsp; &nbsp; *2.* The system should provide an option for users to reset their password if they forget it.<br>
+>>> - [✔] &nbsp; &nbsp; *1.* Users should be able to log in to the bug tracking system using their email address and password.<br>
+>>> - [✔] &nbsp; &nbsp; *2.* The system should provide an option for users to reset their password if they forget it.<br>
 >>> - [ ] &nbsp; &nbsp; *3.* The system should use secure encrypted connections (e.g. SSL/TLS) for user login.<br>
 >>
 >>> ### *2.1.3* Profile Management
->>> - [ ✔] &nbsp; &nbsp; *1.*  Users should be able to view and edit their personal information and preferences.<br>
->>> - [ ✔] &nbsp; &nbsp; *2.*  Users should be able to change their password.<br>
+>>> - [✔] &nbsp; &nbsp; *1.*  Users should be able to view and edit their personal information and preferences.<br>
+>>> - [✔] &nbsp; &nbsp; *2.*  Users should be able to change their password.<br>
 >>> - [ ] &nbsp; &nbsp; *3.*  The system should allow administrators to manage user accounts, including enabling and disabling user accounts.<br>
 >> 
 >> ## *2.2* Content Management

@@ -6,6 +6,9 @@ const mongoose = require('mongoose');
 const path = require('path');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const usersRoutes = require('./routes/users');
+const adminRoutes = require('./routes/admin');
+const ownerRoutes = require('./routes/owner');
 const { verifyToken } = require('./middleware/auth');
 
 const app = express();
@@ -41,6 +44,15 @@ app.use('/api/auth', authRoutes);
 
 // Protected user/profile routes
 app.use('/api/user', userRoutes);
+
+// Owner management routes
+app.use('/api/users', usersRoutes);
+
+// Admin dashboard routes
+app.use('/api/admin', adminRoutes);
+
+// Owner-only routes
+app.use('/api/owner', ownerRoutes);
 
 app.get('/', (_req, res) => {
     res.send('Bug tracker API');
