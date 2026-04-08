@@ -74,6 +74,14 @@ td button:last-child:hover {
   border-radius: 4px;
   cursor: pointer;
   font-size: 13px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.header-title-link {
+  text-decoration: none;
+  color: inherit;
 }
 
 .account-btn:hover {

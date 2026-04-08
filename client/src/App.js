@@ -1,210 +1,82 @@
-import { useState, useEffect } from 'react';
-import AuthPage from './components/AuthPage';
-import AccountPage from './components/AccountPage';
-import AdminDashboard from './components/AdminDashboard';
-import OwnerDashboard from './components/OwnerDashboard';
-import ForcePasswordChange from './components/ForcePasswordChange';
-import './App.css';
+import { lazy, Suspense } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
+
+// ── Layouts (lazy) ────────────────────────────────────────────
+const AuthLayout = lazy(() => import('./layouts/AuthLayout'));
+const UserLayout = lazy(() => import('./layouts/UserLayout'));
+
+// ── id=root  auth chunk ───────────────────────────────────────
+const AuthPage            = lazy(() => import('./components/AuthPage'));
+const ForcePasswordChange = lazy(() => import('./components/ForcePasswordChange'));
+
+// ── id=user  dashboard chunk ──────────────────────────────────
+const AccountPage    = lazy(() => import('./components/AccountPage'));
+const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
+const OwnerDashboard = lazy(() => import('./components/OwnerDashboard'));
+
+// ── id=bug   bug chunk ────────────────────────────────────────
+const BugList = lazy(() => import('./components/BugList'));
+
+// Renders the correct dashboard based on role
+function AdminGate() {
+    const { currentUser } = useAuth();
+    if (currentUser?.role === 'owner')    return <OwnerDashboard />;
+    if (currentUser?.role === 'customer') return <AdminDashboard />;
+    return <Navigate to="/app/bugs" replace />;
+}
+
+function AppLoading() {
+    return (
+        <div style={{ padding: '60px', textAlign: 'center', color: '#888', fontSize: '14px' }}>
+            Loading...
+        </div>
+    );
+}
+
+// Routes live inside AuthProvider + BrowserRouter so hooks work
+function AppRoutes() {
+    return (
+        <Suspense fallback={<AppLoading />}>
+            <Routes>
+                {/* Root → sign in */}
+                <Route path="/" element={<Navigate to="/signin" replace />} />
+
+                {/* ── id=root — auth routes (redirect away if logged in) ── */}
+                <Route element={<AuthLayout />}>
+                    <Route path="/signin" element={<AuthPage />} />
+                </Route>
+
+                {/* Force password change — needs token, no header */}
+                <Route path="/force-password-change" element={<ForcePasswordChange />} />
+
+                {/* ── id=user + id=bug — protected, header lives in UserLayout ── */}
+                <Route path="/app" element={<UserLayout />}>
+                    <Route index element={<Navigate to="/app/bugs" replace />} />
+
+                    {/* id=user */}
+                    <Route path="account" element={<AccountPage />} />
+                    <Route path="admin"   element={<AdminGate />} />
+
+                    {/* id=bug */}
+                    <Route path="bugs" element={<BugList />} />
+                </Route>
+
+                {/* Catch-all */}
+                <Route path="*" element={<Navigate to="/signin" replace />} />
+            </Routes>
+        </Suspense>
+    );
+}
 
 function App() {
-  const [token, setToken] = useState(localStorage.getItem('authToken'));
-  const [currentUser, setCurrentUser] = useState(() => {
-    const stored = localStorage.getItem('currentUser');
-    return stored ? JSON.parse(stored) : null;
-  });
-  const [view, setView] = useState('bugs'); // bugs | account | admin
-  const [bugs, setBugs] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [title, setTitle] = useState('');
-  const [priority, setPriority] = useState('Medium');
-  const [editingId, setEditingId] = useState(null);
-  const [editStatus, setEditStatus] = useState('');
-
-  const isAuthenticated = !!token;
-
-  const handleLogin = (user, newToken) => {
-    setCurrentUser(user);
-    setToken(newToken);
-    localStorage.setItem('authToken', newToken);
-    localStorage.setItem('currentUser', JSON.stringify(user));
-  };
-
-  const handleLogout = () => {
-    setCurrentUser(null);
-    setToken(null);
-    setBugs([]);
-    setView('bugs');
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('currentUser');
-  };
-
-  const authHeaders = {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${token}`
-  };
-
-  useEffect(() => {
-    if (!token) return;
-    setLoading(true);
-    fetch('http://localhost:5000/api/bugs', {
-      headers: { 'Authorization': `Bearer ${token}` }
-    })
-      .then(res => {
-        if (res.status === 401) { handleLogout(); return []; }
-        return res.json();
-      })
-      .then(data => { setBugs(data); setLoading(false); })
-      .catch(() => setLoading(false));
-  }, [token]);
-
-  const handleCreate = (e) => {
-    e.preventDefault();
-    fetch('http://localhost:5000/api/bugs', {
-      method: 'POST',
-      headers: authHeaders,
-      body: JSON.stringify({ title, priority, status: 'Open' })
-    })
-      .then(res => res.json())
-      .then(newBug => { setBugs([...bugs, newBug]); setTitle(''); setPriority('Medium'); })
-      .catch(err => console.error('Error:', err));
-  };
-
-  const handleUpdate = (id) => {
-    fetch(`http://localhost:5000/api/bugs/${id}`, {
-      method: 'PUT',
-      headers: authHeaders,
-      body: JSON.stringify({ status: editStatus })
-    })
-      .then(res => res.json())
-      .then(updatedBug => { setBugs(bugs.map(b => b._id === id ? updatedBug : b)); setEditingId(null); })
-      .catch(err => console.error('Error:', err));
-  };
-
-  const handleDelete = (id) => {
-    if (!window.confirm('Delete this bug?')) return;
-    fetch(`http://localhost:5000/api/bugs/${id}`, { method: 'DELETE', headers: authHeaders })
-      .then(() => setBugs(bugs.filter(b => b._id !== id)))
-      .catch(err => console.error('Error:', err));
-  };
-
-  if (!isAuthenticated) return <AuthPage onLogin={handleLogin} />;
-
-  if (currentUser?.mustChangePassword) {
     return (
-      <ForcePasswordChange
-        token={token}
-        onComplete={() => {
-          const updated = { ...currentUser, mustChangePassword: false };
-          setCurrentUser(updated);
-          localStorage.setItem('currentUser', JSON.stringify(updated));
-        }}
-      />
+        <AuthProvider>
+            <BrowserRouter>
+                <AppRoutes />
+            </BrowserRouter>
+        </AuthProvider>
     );
-  }
-
-  if (view === 'account') {
-    return (
-      <AccountPage
-        token={token}
-        currentUser={currentUser}
-        onUserUpdate={(updated) => {
-          const merged = { ...currentUser, ...updated };
-          setCurrentUser(merged);
-          localStorage.setItem('currentUser', JSON.stringify(merged));
-        }}
-        onBack={() => setView('bugs')}
-      />
-    );
-  }
-
-  if (view === 'admin') {
-    if (currentUser?.role === 'owner') {
-      return <OwnerDashboard token={token} onBack={() => setView('bugs')} />;
-    }
-    if (currentUser?.role === 'customer') {
-      return <AdminDashboard token={token} onBack={() => setView('bugs')} />;
-    }
-    setView('bugs');
-    return null;
-  }
-
-  if (loading) return <div>Loading...</div>;
-
-  return (
-    <div className="App">
-      <div className="app-header">
-        <h1>Bug Tracker</h1>
-        <div className="user-info">
-          <span>Welcome, {currentUser?.username || 'User'}</span>
-          {currentUser?.role === 'owner' && (
-            <button onClick={() => setView('admin')} className="account-btn">Owner Panel</button>
-          )}
-          {currentUser?.role === 'customer' && (
-            <button onClick={() => setView('admin')} className="account-btn">Admin</button>
-          )}
-          <button onClick={() => setView('account')} className="account-btn">My Account</button>
-          <button onClick={handleLogout} className="logout-btn">Logout</button>
-        </div>
-      </div>
-
-      <form onSubmit={handleCreate}>
-        <input
-          type="text"
-          placeholder="Bug title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
-        <select value={priority} onChange={(e) => setPriority(e.target.value)}>
-          <option>Low</option>
-          <option>Medium</option>
-          <option>High</option>
-        </select>
-        <button type="submit">Add Bug</button>
-      </form>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Status</th>
-            <th>Priority</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {bugs.map(bug => (
-            <tr key={bug._id}>
-              <td>{bug.title}</td>
-              <td>
-                {editingId === bug._id ? (
-                  <select value={editStatus} onChange={(e) => setEditStatus(e.target.value)}>
-                    <option>Open</option>
-                    <option>In Progress</option>
-                    <option>Closed</option>
-                  </select>
-                ) : bug.status}
-              </td>
-              <td>{bug.priority}</td>
-              <td>
-                {editingId === bug._id ? (
-                  <>
-                    <button onClick={() => handleUpdate(bug._id)}>Save</button>
-                    <button onClick={() => setEditingId(null)}>Cancel</button>
-                  </>
-                ) : (
-                  <>
-                    <button onClick={() => { setEditingId(bug._id); setEditStatus(bug.status); }}>Edit</button>
-                    <button onClick={() => handleDelete(bug._id)}>Delete</button>
-                  </>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
 }
 
 export default App;

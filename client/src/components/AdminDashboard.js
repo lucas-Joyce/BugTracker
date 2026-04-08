@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import SlotCounter from './SlotCounter';
 import TeamTable from './TeamTable';
 import ViewerTable from './ViewerTable';
@@ -111,7 +113,9 @@ function ProjectModal({ token, users, project, onClose, onSaved }) {
     );
 }
 
-function AdminDashboard({ token, onBack }) {
+function AdminDashboard() {
+    const { token } = useAuth();
+    const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('users');
 
     const [users, setUsers] = useState([]);
@@ -214,7 +218,7 @@ function AdminDashboard({ token, onBack }) {
     return (
         <div className="admin-page">
             <div className="admin-header">
-                <button className="back-btn" onClick={onBack}>← Back</button>
+                <button className="back-btn" onClick={() => navigate(-1)}>← Back</button>
                 <h1>Admin Dashboard</h1>
             </div>
 

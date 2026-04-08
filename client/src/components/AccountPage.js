@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import '../Account.css';
 
 const EyeOn = () => (
@@ -25,7 +27,9 @@ const GearIcon = () => (
 
 const API = 'http://localhost:5000';
 
-function AccountPage({ token, currentUser, onUserUpdate, onBack }) {
+function AccountPage() {
+    const { token, currentUser, updateUser } = useAuth();
+    const navigate = useNavigate();
     const [avatarOpen, setAvatarOpen] = useState(false);
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [subscriptionOpen, setSubscriptionOpen] = useState(false);
@@ -113,7 +117,7 @@ function AccountPage({ token, currentUser, onUserUpdate, onBack }) {
             });
             const data = await res.json();
             if (!res.ok) setError(data.message);
-            else { setSuccess('Profile updated'); onUserUpdate(data.user); }
+            else { setSuccess('Profile updated'); updateUser(data.user); }
         } catch {
             setError('Connection error');
         }
@@ -205,7 +209,7 @@ function AccountPage({ token, currentUser, onUserUpdate, onBack }) {
     return (
         <div className="account-page">
             <div className="account-header">
-                <button className="back-btn" onClick={onBack}>← Back</button>
+                <button className="back-btn" onClick={() => navigate(-1)}>← Back</button>
                 <h2>My Account</h2>
             </div>
 

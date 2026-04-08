@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import '../Auth.css';
 
 const API = 'http://localhost:5000';
@@ -34,7 +36,9 @@ const calculateStrength = (password) => {
     return { label: 'Strong', color: '#4caf50', percent: 100 };
 };
 
-function AuthPage({ onLogin }) {
+function AuthPage() {
+    const { login } = useAuth();
+    const navigate = useNavigate();
     const [view, setView] = useState('signin'); // signin | signup | forgot | pending | reset
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
@@ -141,7 +145,8 @@ function AuthPage({ onLogin }) {
                 setLoading(false);
                 return;
             }
-            onLogin(data.user, data.token);
+            login(data.user, data.token);
+            navigate('/app/bugs');
         } catch {
             setError('Connection error. Is the server running?');
         }

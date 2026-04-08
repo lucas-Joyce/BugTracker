@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import '../Admin.css';
 
 const API = 'http://localhost:5000';
@@ -10,7 +12,9 @@ const STATUS_BADGE = {
     expired: { label: 'Expired', cls: 'badge-expired' },
 };
 
-function OwnerDashboard({ token, onBack }) {
+function OwnerDashboard() {
+    const { token } = useAuth();
+    const navigate = useNavigate();
     const [customers, setCustomers] = useState([]);
     const [stats, setStats]         = useState({ coders: 0, testers: 0, viewers: 0, total: 0 });
     const [loading, setLoading]     = useState(true);
@@ -85,7 +89,7 @@ function OwnerDashboard({ token, onBack }) {
     return (
         <div className="admin-page">
             <div className="admin-header">
-                <button className="back-btn" onClick={onBack}>← Back</button>
+                <button className="back-btn" onClick={() => navigate(-1)}>← Back</button>
                 <h1>Owner Dashboard</h1>
             </div>
 

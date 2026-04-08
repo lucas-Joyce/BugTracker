@@ -1,9 +1,13 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import '../Auth.css';
 
 const API = 'http://localhost:5000';
 
-function ForcePasswordChange({ token, onComplete }) {
+function ForcePasswordChange() {
+    const { token, updateUser } = useAuth();
+    const navigate = useNavigate();
     const [password, setPassword]     = useState('');
     const [confirm, setConfirm]       = useState('');
     const [showPass, setShowPass]     = useState(false);
@@ -31,7 +35,8 @@ function ForcePasswordChange({ token, onComplete }) {
             });
             const data = await res.json();
             if (!res.ok) { setError(data.message); return; }
-            onComplete();
+            updateUser({ mustChangePassword: false });
+            navigate('/app/bugs');
         } catch {
             setError('Connection error. Is the server running?');
         } finally {
