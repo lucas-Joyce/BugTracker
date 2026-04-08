@@ -1,5 +1,5 @@
 .account-page {
-    max-width: 760px;
+    max-width: 860px;
     margin: 0 auto;
     padding: 20px;
 }
@@ -58,38 +58,214 @@
     .account-success { background-color: #1b3a1f; color: #a5d6a7; }
 }
 
-/* Avatar card */
-.avatar-card {
+/* ── Card row layout ───────────────────────────────────────── */
+
+.acc-cards-row {
     display: flex;
-    align-items: center;
-    gap: 24px;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.acc-cards-row .acc-card {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ── Base card ─────────────────────────────────────────────── */
+
+.acc-card {
+    position: relative;
     background: var(--bg-surface);
     border: 1px solid var(--border);
     border-radius: 6px;
-    padding: 24px;
-    margin-bottom: 20px;
+    padding: 20px 20px 36px 20px; /* bottom padding reserves space for toggle */
+    margin-bottom: 16px;
 }
 
-.avatar-card-info {
+.acc-card--full {
+    width: 100%;
+}
+
+/* ── Card top (collapsed header) ───────────────────────────── */
+
+.acc-card-top {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.acc-card-top--gear {
+    justify-content: space-between;
+}
+
+.acc-card-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.acc-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.acc-card-sub {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+/* ── Expanded card body ────────────────────────────────────── */
+
+.acc-card-body {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.acc-card-body--row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.acc-card-body--row .acc-field {
+    flex: 1;
+    min-width: 160px;
+}
+
+/* ── Fields ────────────────────────────────────────────────── */
+
+.acc-field {
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
 
-.avatar-card-nickname {
-    font-size: 20px;
-    font-weight: bold;
-    color: var(--text);
-}
-
-.avatar-card-jobtitle {
-    font-size: 14px;
+.acc-field label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     color: var(--text-muted);
 }
 
+.acc-field input {
+    padding: 7px 10px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--input-bg);
+    color: var(--input-text);
+    font-size: 14px;
+}
+
+.acc-field input:focus {
+    outline: none;
+    border-color: var(--link);
+}
+
+.acc-field--readonly span {
+    font-size: 14px;
+    color: var(--text);
+    padding: 2px 0;
+}
+
+.acc-field-inline {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.acc-field-inline input {
+    flex: 1;
+}
+
+/* ── Subsections (Change Password / Change Email) ──────────── */
+
+.acc-subsection {
+    margin-top: 8px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.acc-subsection h4 {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.acc-subsection form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ── Card actions row ──────────────────────────────────────── */
+
+.acc-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 4px;
+}
+
+/* ── Utility ───────────────────────────────────────────────── */
+
+.acc-mono {
+    font-family: monospace;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.acc-stub {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* ── Triangle toggle ───────────────────────────────────────── */
+
+.acc-toggle {
+    position: absolute;
+    bottom: 8px;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 6px;
+    line-height: 1;
+}
+
+.acc-triangle {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 7px solid var(--text-muted);
+    transition: transform 0.2s;
+}
+
+.acc-triangle--up {
+    transform: rotate(180deg);
+}
+
+.acc-toggle:hover .acc-triangle {
+    border-top-color: var(--text);
+}
+
+/* ── Avatar ────────────────────────────────────────────────── */
+
 .avatar {
-    width: 100px;
-    height: 100px;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
     overflow: hidden;
     background-color: var(--header-bg);
@@ -99,6 +275,7 @@
     cursor: pointer;
     position: relative;
     border: 3px solid var(--border);
+    flex-shrink: 0;
 }
 
 .avatar img {
@@ -109,7 +286,7 @@
 
 .avatar-initials {
     color: var(--header-text);
-    font-size: 32px;
+    font-size: 24px;
     font-weight: bold;
     letter-spacing: 1px;
 }
@@ -121,8 +298,8 @@
     background: rgba(0,0,0,0.55);
     color: #fff;
     text-align: center;
-    font-size: 11px;
-    padding: 4px 0;
+    font-size: 10px;
+    padding: 3px 0;
     opacity: 0;
     transition: opacity 0.2s;
 }
@@ -132,9 +309,9 @@
 }
 
 .photo-hint {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-muted);
-    margin-top: 8px;
+    margin: 0;
 }
 
 .delete-photo-btn {
@@ -143,7 +320,6 @@
     color: #d32f2f;
     font-size: 12px;
     cursor: pointer;
-    margin-top: 4px;
     padding: 0;
 }
 
@@ -151,57 +327,34 @@
     text-decoration: underline;
 }
 
-/* Forms */
-.account-form {
-    background: var(--bg-surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 24px;
-    margin-bottom: 20px;
-}
+/* ── Buttons ───────────────────────────────────────────────── */
 
-.account-form h3 {
-    margin: 0 0 20px 0;
-    font-size: 15px;
-    color: var(--text);
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 10px;
-}
-
-.account-row {
-    display: flex;
-    gap: 16px;
-    margin-bottom: 14px;
-}
-
-.account-field {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.account-field label {
-    font-size: 12px;
-    color: var(--text-muted);
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-}
-
-.account-field input {
-    padding: 8px 10px;
-    border: 1px solid var(--border);
+.save-btn {
+    background-color: var(--btn-bg);
+    color: var(--header-text);
+    border: none;
+    padding: 9px 20px;
     border-radius: 4px;
-    background: var(--input-bg);
-    color: var(--input-text);
+    cursor: pointer;
     font-size: 14px;
+    align-self: flex-start;
 }
 
-.account-field input:focus {
-    outline: none;
-    border-color: var(--link);
+.save-btn:hover {
+    background-color: var(--btn-bg-hover);
 }
+
+.save-btn:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+}
+
+.save-btn--sm {
+    padding: 7px 12px;
+    font-size: 13px;
+}
+
+/* ── Password input ────────────────────────────────────────── */
 
 .password-wrapper {
     position: relative;
@@ -230,34 +383,10 @@
     color: var(--text);
 }
 
-.account-field.readonly input {
-    background: var(--bg-alt);
-    color: var(--text-muted);
-    cursor: default;
-}
+/* ── Responsive ────────────────────────────────────────────── */
 
-
-.save-btn {
-    background-color: var(--btn-bg);
-    color: var(--header-text);
-    border: none;
-    padding: 9px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.save-btn:hover {
-    background-color: var(--btn-bg-hover);
-}
-
-.save-btn:disabled {
-    background-color: #999;
-    cursor: not-allowed;
-}
-
-@media (max-width: 560px) {
-    .account-row {
+@media (max-width: 600px) {
+    .acc-cards-row {
         flex-direction: column;
     }
 }

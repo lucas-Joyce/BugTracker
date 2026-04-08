@@ -16,9 +16,20 @@ const EyeOff = () => (
     </svg>
 );
 
+const GearIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+    </svg>
+);
+
 const API = 'http://localhost:5000';
 
 function AccountPage({ token, currentUser, onUserUpdate, onBack }) {
+    const [avatarOpen, setAvatarOpen] = useState(false);
+    const [settingsOpen, setSettingsOpen] = useState(false);
+    const [subscriptionOpen, setSubscriptionOpen] = useState(false);
+
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -27,19 +38,20 @@ function AccountPage({ token, currentUser, onUserUpdate, onBack }) {
     const [photoPreview, setPhotoPreview] = useState(null);
     const fileInputRef = useRef();
 
-    // Profile fields
     const [name, setName] = useState('');
     const [nickname, setNickname] = useState('');
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [companyName, setCompanyName] = useState('');
     const [jobTitle, setJobTitle] = useState('');
+    const [mobileNumber, setMobileNumber] = useState('');
 
-    // Password fields
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+
+    const [newEmail, setNewEmail] = useState('');
 
     const authHeaders = {
         'Content-Type': 'application/json',
@@ -59,9 +71,8 @@ function AccountPage({ token, currentUser, onUserUpdate, onBack }) {
                 setUsername(data.username || '');
                 setCompanyName(data.companyName || '');
                 setJobTitle(data.jobTitle || '');
-                if (data.profilePhoto) {
-                    setPhotoPreview(`${API}${data.profilePhoto}`);
-                }
+                setMobileNumber(data.mobileNumber || '');
+                if (data.profilePhoto) setPhotoPreview(`${API}${data.profilePhoto}`);
                 setLoading(false);
             })
             .catch(() => setLoading(false));
@@ -70,19 +81,12 @@ function AccountPage({ token, currentUser, onUserUpdate, onBack }) {
     const handlePhotoChange = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
-
-        // Show preview immediately
         const reader = new FileReader();
         reader.onload = (ev) => setPhotoPreview(ev.target.result);
         reader.readAsDataURL(file);
-
-        // Reset file input so the same file can be re-selected if needed
         fileInputRef.current.value = '';
-
-        // Upload to server
         const formData = new FormData();
         formData.append('photo', file);
-
         try {
             const res = await fetch(`${API}/api/user/photo`, {
                 method: 'POST',
@@ -90,11 +94,8 @@ function AccountPage({ token, currentUser, onUserUpdate, onBack }) {
                 body: formData
             });
             const data = await res.json();
-            if (!res.ok) {
-                setError(data.message);
-            } else {
-                setSuccess('Profile photo updated');
-            }
+            if (!res.ok) setError(data.message);
+            else setSuccess('Profile photo updated');
         } catch {
             setError('Failed to upload photo');
         }
@@ -102,22 +103,35 @@ function AccountPage({ token, currentUser, onUserUpdate, onBack }) {
 
     const handleSaveProfile = async (e) => {
         e.preventDefault();
-        setError('');
-        setSuccess('');
+        setError(''); setSuccess('');
         setSaving(true);
         try {
             const res = await fetch(`${API}/api/user/profile`, {
                 method: 'PUT',
                 headers: authHeaders,
-                body: JSON.stringify({ name, nickname, email, username, companyName, jobTitle })
+                body: JSON.stringify({ name, nickname, username, companyName, jobTitle })
             });
             const data = await res.json();
-            if (!res.ok) {
-                setError(data.message);
-            } else {
-                setSuccess('Profile updated successfully');
-                onUserUpdate(data.user);
-            }
+            if (!res.ok) setError(data.message);
+            else { setSuccess('Profile updated'); onUserUpdate(data.user); }
+        } catch {
+            setError('Connection error');
+        }
+        setSaving(false);
+    };
+
+    const handleSaveMobile = async () => {
+        setError(''); setSuccess('');
+        setSaving(true);
+        try {
+            const res = await fetch(`${API}/api/user/profile`, {
+                method: 'PUT',
+                headers: authHeaders,
+                body: JSON.stringify({ mobileNumber })
+            });
+            const data = await res.json();
+            if (!res.ok) setError(data.message);
+            else setSuccess('Mobile number saved');
         } catch {
             setError('Connection error');
         }
@@ -125,20 +139,15 @@ function AccountPage({ token, currentUser, onUserUpdate, onBack }) {
     };
 
     const handleDeletePhoto = async () => {
-        setError('');
-        setSuccess('');
+        setError(''); setSuccess('');
         try {
             const res = await fetch(`${API}/api/user/photo`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await res.json();
-            if (!res.ok) {
-                setError(data.message);
-            } else {
-                setPhotoPreview(null);
-                setSuccess('Photo removed');
-            }
+            if (!res.ok) setError(data.message);
+            else { setPhotoPreview(null); setSuccess('Photo removed'); }
         } catch {
             setError('Connection error');
         }
@@ -146,8 +155,7 @@ function AccountPage({ token, currentUser, onUserUpdate, onBack }) {
 
     const handleChangePassword = async (e) => {
         e.preventDefault();
-        setError('');
-        setSuccess('');
+        setError(''); setSuccess('');
         setSaving(true);
         try {
             const res = await fetch(`${API}/api/user/change-password`, {
@@ -156,13 +164,33 @@ function AccountPage({ token, currentUser, onUserUpdate, onBack }) {
                 body: JSON.stringify({ currentPassword, newPassword, confirmPassword })
             });
             const data = await res.json();
-            if (!res.ok) {
-                setError(data.message);
-            } else {
+            if (!res.ok) setError(data.message);
+            else {
                 setSuccess(data.message);
-                setCurrentPassword('');
-                setNewPassword('');
-                setConfirmPassword('');
+                setCurrentPassword(''); setNewPassword(''); setConfirmPassword('');
+            }
+        } catch {
+            setError('Connection error');
+        }
+        setSaving(false);
+    };
+
+    const handleChangeEmail = async (e) => {
+        e.preventDefault();
+        setError(''); setSuccess('');
+        setSaving(true);
+        try {
+            const res = await fetch(`${API}/api/user/profile`, {
+                method: 'PUT',
+                headers: authHeaders,
+                body: JSON.stringify({ email: newEmail })
+            });
+            const data = await res.json();
+            if (!res.ok) setError(data.message);
+            else {
+                setEmail(newEmail);
+                setNewEmail('');
+                setSuccess('Email updated');
             }
         } catch {
             setError('Connection error');
@@ -184,124 +212,188 @@ function AccountPage({ token, currentUser, onUserUpdate, onBack }) {
             {error && <div className="account-error">{error}</div>}
             {success && <div className="account-success">{success}</div>}
 
-            {/* Avatar Card */}
-            <div className="avatar-card">
-                <div className="avatar" onClick={() => fileInputRef.current.click()}>
-                    {photoPreview
-                        ? <img src={photoPreview} alt="Profile" />
-                        : <span className="avatar-initials">{initials}</span>
-                    }
-                    <div className="avatar-overlay">Change</div>
-                </div>
-                <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    style={{ display: 'none' }}
-                    onChange={handlePhotoChange}
-                />
-                <div className="avatar-card-info">
-                    <span className="avatar-card-nickname">{nickname || name || 'No nickname set'}</span>
-                    <span className="avatar-card-jobtitle">{jobTitle || '—'}</span>
-                    <p className="photo-hint">Click photo to change · Max 2MB</p>
-                    {photoPreview && (
-                        <button type="button" className="delete-photo-btn" onClick={handleDeletePhoto}>
-                            Remove photo
-                        </button>
+            {/* Top row: avatar-card + settings-card */}
+            <div className="acc-cards-row">
+
+                {/* Avatar Card */}
+                <div className={`acc-card${avatarOpen ? ' acc-card--open' : ''}`}>
+                    <div className="acc-card-top">
+                        <div className="avatar" onClick={() => fileInputRef.current.click()}>
+                            {photoPreview
+                                ? <img src={photoPreview} alt="Profile" />
+                                : <span className="avatar-initials">{initials}</span>
+                            }
+                            <div className="avatar-overlay">Change</div>
+                        </div>
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                            onChange={handlePhotoChange}
+                        />
+                        <div className="acc-card-summary">
+                            <span className="acc-card-title">{nickname || name || '—'}</span>
+                            <span className="acc-card-sub">{jobTitle || '—'}</span>
+                        </div>
+                    </div>
+
+                    {avatarOpen && (
+                        <form className="acc-card-body" onSubmit={handleSaveProfile}>
+                            <div className="acc-field">
+                                <label>Full Name</label>
+                                <input value={name} onChange={e => setName(e.target.value)} required />
+                            </div>
+                            <div className="acc-field">
+                                <label>Nickname</label>
+                                <input value={nickname} onChange={e => setNickname(e.target.value)} placeholder="Optional" />
+                            </div>
+                            <div className="acc-field">
+                                <label>Job Title</label>
+                                <input value={jobTitle} onChange={e => setJobTitle(e.target.value)} />
+                            </div>
+                            <div className="acc-field">
+                                <label>Company Name</label>
+                                <input value={companyName} onChange={e => setCompanyName(e.target.value)} />
+                            </div>
+                            <div className="acc-card-actions">
+                                <button type="submit" className="save-btn" disabled={saving}>
+                                    {saving ? 'Saving...' : 'Save'}
+                                </button>
+                                {photoPreview && (
+                                    <button type="button" className="delete-photo-btn" onClick={handleDeletePhoto}>
+                                        Remove photo
+                                    </button>
+                                )}
+                            </div>
+                            <p className="photo-hint">Click photo to change · Max 2MB</p>
+                        </form>
                     )}
+
+                    <button type="button" className="acc-toggle" onClick={() => setAvatarOpen(v => !v)}>
+                        <span className={`acc-triangle${avatarOpen ? ' acc-triangle--up' : ''}`} />
+                    </button>
+                </div>
+
+                {/* Settings Card */}
+                <div className={`acc-card${settingsOpen ? ' acc-card--open' : ''}`}>
+                    <div className="acc-card-top acc-card-top--gear">
+                        <span className="acc-card-title">Settings</span>
+                        <GearIcon />
+                    </div>
+
+                    {settingsOpen && (
+                        <div className="acc-card-body">
+                            <div className="acc-field acc-field--readonly">
+                                <label>Email Address</label>
+                                <span>{email}</span>
+                            </div>
+                            <div className="acc-field acc-field--readonly">
+                                <label>Account Number</label>
+                                <span className="acc-mono">{profile?._id || '—'}</span>
+                            </div>
+                            <div className="acc-field acc-field--readonly">
+                                <label>Member Since</label>
+                                <span>{profile?.createdAt ? new Date(profile.createdAt).toLocaleDateString() : '—'}</span>
+                            </div>
+                            <div className="acc-field acc-field--readonly">
+                                <label>User ID</label>
+                                <span>{username}</span>
+                            </div>
+                            <div className="acc-field">
+                                <label>Mobile Number</label>
+                                <div className="acc-field-inline">
+                                    <input
+                                        value={mobileNumber}
+                                        onChange={e => setMobileNumber(e.target.value)}
+                                        placeholder="Optional"
+                                    />
+                                    <button type="button" className="save-btn save-btn--sm" disabled={saving} onClick={handleSaveMobile}>
+                                        Save
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="acc-subsection">
+                                <h4>Change Password</h4>
+                                <form onSubmit={handleChangePassword}>
+                                    <div className="acc-field">
+                                        <label>Current Password</label>
+                                        <div className="password-wrapper">
+                                            <input
+                                                type={showCurrentPassword ? 'text' : 'password'}
+                                                value={currentPassword}
+                                                onChange={e => setCurrentPassword(e.target.value)}
+                                                autoComplete="current-password"
+                                                required
+                                            />
+                                            <button type="button" className="password-toggle" onClick={() => setShowCurrentPassword(v => !v)} tabIndex={-1}>
+                                                {showCurrentPassword ? <EyeOff /> : <EyeOn />}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div className="acc-field">
+                                        <label>New Password</label>
+                                        <input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} autoComplete="new-password" required />
+                                    </div>
+                                    <div className="acc-field">
+                                        <label>Confirm New Password</label>
+                                        <input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} autoComplete="new-password" required />
+                                    </div>
+                                    <button type="submit" className="save-btn" disabled={saving}>
+                                        {saving ? 'Updating...' : 'Update Password'}
+                                    </button>
+                                </form>
+                            </div>
+
+                            <div className="acc-subsection">
+                                <h4>Change Email</h4>
+                                <form onSubmit={handleChangeEmail}>
+                                    <div className="acc-field">
+                                        <label>New Email Address</label>
+                                        <input type="email" value={newEmail} onChange={e => setNewEmail(e.target.value)} required />
+                                    </div>
+                                    <button type="submit" className="save-btn" disabled={saving}>
+                                        {saving ? 'Updating...' : 'Update Email'}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    )}
+
+                    <button type="button" className="acc-toggle" onClick={() => setSettingsOpen(v => !v)}>
+                        <span className={`acc-triangle${settingsOpen ? ' acc-triangle--up' : ''}`} />
+                    </button>
                 </div>
             </div>
 
-            {/* Profile Info */}
-            <form className="account-form" onSubmit={handleSaveProfile}>
-                <h3>Profile Information</h3>
-                <div className="account-row">
-                    <div className="account-field">
-                        <label>Full Name</label>
-                        <input value={name} onChange={e => setName(e.target.value)} required />
-                    </div>
-                    <div className="account-field">
-                        <label>Nickname</label>
-                        <input value={nickname} onChange={e => setNickname(e.target.value)} placeholder="Optional display name" />
-                    </div>
+            {/* Subscription Card */}
+            <div className={`acc-card acc-card--full${subscriptionOpen ? ' acc-card--open' : ''}`}>
+                <div className="acc-card-top">
+                    <span className="acc-card-title">Subscription</span>
                 </div>
-                <div className="account-row">
-                    <div className="account-field">
-                        <label>Email Address</label>
-                        <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
-                    </div>
-                </div>
-                <div className="account-row">
-                    <div className="account-field">
-                        <label>User ID</label>
-                        <input value={username} onChange={e => setUsername(e.target.value)} required />
-                    </div>
-                    <div className="account-field">
-                        <label>Job Title</label>
-                        <input value={jobTitle} onChange={e => setJobTitle(e.target.value)} required />
-                    </div>
-                </div>
-                <div className="account-row">
-                    <div className="account-field">
-                        <label>Company Name</label>
-                        <input value={companyName} onChange={e => setCompanyName(e.target.value)} required />
-                    </div>
-                    <div className="account-field readonly">
-                        <label>Member Since</label>
-                        <input value={profile?.createdAt ? new Date(profile.createdAt).toLocaleDateString() : '—'} readOnly />
-                    </div>
-                </div>
-                <button type="submit" className="save-btn" disabled={saving}>
-                    {saving ? 'Saving...' : 'Save Changes'}
-                </button>
-            </form>
 
-            {/* Change Password */}
-            <form className="account-form" onSubmit={handleChangePassword}>
-                <h3>Change Password</h3>
-                <div className="account-row">
-                    <div className="account-field">
-                        <label>Current Password</label>
-                        <div className="password-wrapper">
-                            <input
-                                type={showCurrentPassword ? 'text' : 'password'}
-                                value={currentPassword}
-                                onChange={e => setCurrentPassword(e.target.value)}
-                                autoComplete="current-password"
-                                required
-                            />
-                            <button type="button" className="password-toggle" onClick={() => setShowCurrentPassword(v => !v)} tabIndex={-1}>
-                                {showCurrentPassword ? <EyeOff /> : <EyeOn />}
-                            </button>
+                {subscriptionOpen && (
+                    <div className="acc-card-body acc-card-body--row">
+                        <div className="acc-field acc-field--readonly">
+                            <label>Customer ID</label>
+                            <span className="acc-mono">{profile?._id || '—'}</span>
+                        </div>
+                        <div className="acc-field acc-field--readonly">
+                            <label>Bank Account Details</label>
+                            <span className="acc-stub">Not set up</span>
+                        </div>
+                        <div className="acc-field acc-field--readonly">
+                            <label>Subscription Type</label>
+                            <span className="acc-stub">No active subscription</span>
                         </div>
                     </div>
-                </div>
-                <div className="account-row">
-                    <div className="account-field">
-                        <label>New Password</label>
-                        <input
-                            type="password"
-                            value={newPassword}
-                            onChange={e => setNewPassword(e.target.value)}
-                            autoComplete="new-password"
-                            required
-                        />
-                    </div>
-                    <div className="account-field">
-                        <label>Confirm New Password</label>
-                        <input
-                            type="password"
-                            value={confirmPassword}
-                            onChange={e => setConfirmPassword(e.target.value)}
-                            autoComplete="new-password"
-                            required
-                        />
-                    </div>
-                </div>
-                <button type="submit" className="save-btn" disabled={saving}>
-                    {saving ? 'Updating...' : 'Update Password'}
+                )}
+
+                <button type="button" className="acc-toggle" onClick={() => setSubscriptionOpen(v => !v)}>
+                    <span className={`acc-triangle${subscriptionOpen ? ' acc-triangle--up' : ''}`} />
                 </button>
-            </form>
+            </div>
         </div>
     );
 }

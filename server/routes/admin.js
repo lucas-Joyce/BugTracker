@@ -1,6 +1,7 @@
 const express = require('express');
 const crypto = require('crypto');
 const User = require('../models/User');
+const Project = require('../models/Project');
 const { verifyToken, requireRole } = require('../middleware/auth');
 const { sendActivationEmail, sendInviteEmail } = require('../config/email');
 
@@ -10,6 +11,7 @@ const CODER_CAP = 5;
 const TESTER_CAP = 5;
 const VIEWER_CAP = 10;
 const VIEWER_TTL_MS = 30 * 24 * 60 * 60 * 1000;
+const PROJECT_CAP = 3;
 
 // Generate a unique username derived from an email address
 async function generateUsername(email) {
@@ -240,6 +242,81 @@ router.delete('/users/:id', verifyToken, requireRole('owner', 'customer'), async
         res.json({ message: 'User deleted' });
     } catch (err) {
         console.error('Admin delete user error:', err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// GET /api/admin/projects — list customer's projects
+router.get('/projects', verifyToken, requireRole('owner', 'customer'), async (req, res) => {
+    try {
+        const projects = await Project.find({ createdBy: req.user.userId })
+            .populate('members', 'name username jobRole status')
+            .sort({ createdAt: -1 });
+        res.json({ projects });
+    } catch (err) {
+        console.error('Get projects error:', err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// POST /api/admin/projects — create project (max 3)
+router.post('/projects', verifyToken, requireRole('owner', 'customer'), async (req, res) => {
+    try {
+        const { name, description, members } = req.body;
+        if (!name || !name.trim()) {
+            return res.status(400).json({ message: 'Project name is required' });
+        }
+
+        const count = await Project.countDocuments({ createdBy: req.user.userId });
+        if (count >= PROJECT_CAP) {
+            return res.status(400).json({ message: `Project limit reached (max ${PROJECT_CAP})` });
+        }
+
+        const project = await Project.create({
+            name: name.trim(),
+            description: description?.trim() || '',
+            createdBy: req.user.userId,
+            members: members || []
+        });
+
+        const populated = await Project.findById(project._id)
+            .populate('members', 'name username jobRole status');
+        res.status(201).json({ project: populated });
+    } catch (err) {
+        console.error('Create project error:', err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// PATCH /api/admin/projects/:id — update name / description / members
+router.patch('/projects/:id', verifyToken, requireRole('owner', 'customer'), async (req, res) => {
+    try {
+        const project = await Project.findOne({ _id: req.params.id, createdBy: req.user.userId });
+        if (!project) return res.status(404).json({ message: 'Project not found' });
+
+        const { name, description, members } = req.body;
+        if (name !== undefined) project.name = name.trim();
+        if (description !== undefined) project.description = description.trim();
+        if (members !== undefined) project.members = members;
+
+        await project.save();
+        const populated = await Project.findById(project._id)
+            .populate('members', 'name username jobRole status');
+        res.json({ project: populated });
+    } catch (err) {
+        console.error('Update project error:', err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// DELETE /api/admin/projects/:id
+router.delete('/projects/:id', verifyToken, requireRole('owner', 'customer'), async (req, res) => {
+    try {
+        const project = await Project.findOneAndDelete({ _id: req.params.id, createdBy: req.user.userId });
+        if (!project) return res.status(404).json({ message: 'Project not found' });
+        res.json({ message: 'Project deleted' });
+    } catch (err) {
+        console.error('Delete project error:', err);
         res.status(500).json({ message: 'Server error' });
     }
 });

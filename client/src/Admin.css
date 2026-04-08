@@ -377,3 +377,188 @@
 
 .invite-sent-note { font-size: 0.88rem; color: #2e7d32; margin: 10px 0 4px; }
 .invite-expiry { font-size: 0.8rem; color: #999; margin: 4px 0; }
+
+/* ── Tabs ─────────────────────────────────────────────────── */
+
+.admin-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid #e0e0e0;
+    margin-bottom: 24px;
+}
+
+.admin-tab {
+    padding: 10px 22px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: #666;
+    font-weight: 500;
+    transition: color 0.15s;
+}
+
+.admin-tab:hover { color: #222; }
+
+.admin-tab--active {
+    color: #111;
+    border-bottom-color: #111;
+    font-weight: 600;
+}
+
+/* ── Project Management tab ───────────────────────────────── */
+
+.projects-tab-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.projects-tab-count {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.projects-empty {
+    padding: 40px 0 20px;
+    text-align: center;
+    color: #888;
+}
+
+.projects-empty p { margin: 4px 0; }
+
+.projects-empty-hint {
+    font-size: 0.88rem;
+    color: #aaa;
+}
+
+/* ── Project cards ────────────────────────────────────────── */
+
+.project-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.project-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 18px 20px;
+    background: #fafafa;
+}
+
+.project-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+}
+
+.project-card-name {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111;
+}
+
+.project-card-desc {
+    margin: 0 0 12px;
+    font-size: 0.88rem;
+    color: #555;
+    line-height: 1.5;
+}
+
+.project-card-members {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.project-members-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #999;
+    flex-shrink: 0;
+}
+
+.project-no-members {
+    font-size: 0.85rem;
+    color: #bbb;
+    font-style: italic;
+}
+
+.project-member-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.project-member-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 0.82rem;
+    color: #333;
+}
+
+.project-card-meta {
+    font-size: 0.78rem;
+    color: #bbb;
+    margin-top: 4px;
+}
+
+/* ── Project modal extras ─────────────────────────────────── */
+
+.modal-field textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+.member-checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 10px 12px;
+    background: #fafafa;
+}
+
+.member-check-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.member-check-row input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    cursor: pointer;
+}
+
+.member-check-name {
+    flex: 1;
+    color: #222;
+}

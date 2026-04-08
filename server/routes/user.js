@@ -42,7 +42,7 @@ router.get('/profile', verifyToken, async (req, res) => {
 // PUT /api/user/profile — update name, email, username, companyName, jobTitle
 router.put('/profile', verifyToken, async (req, res) => {
     try {
-        const { name, email, username, companyName, jobTitle, nickname } = req.body;
+        const { name, email, username, companyName, jobTitle, nickname, mobileNumber } = req.body;
         const user = await User.findById(req.user.userId);
         if (!user) return res.status(404).json({ message: 'User not found' });
 
@@ -64,6 +64,7 @@ router.put('/profile', verifyToken, async (req, res) => {
         if (companyName) user.companyName = companyName;
         if (jobTitle) user.jobTitle = jobTitle;
         if (nickname !== undefined) user.nickname = nickname;
+        if (mobileNumber !== undefined) user.mobileNumber = mobileNumber;
 
         await user.save();
         res.json({

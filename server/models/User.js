@@ -21,6 +21,7 @@ const userSchema = new mongoose.Schema({
     lastLoginAt: { type: Date, default: null },
     managedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
     nickname: { type: String, trim: true, default: '' },
+    mobileNumber: { type: String, trim: true, default: '' },
     profilePhoto: { type: String, default: null },
     createdAt: { type: Date, default: Date.now }
 });
