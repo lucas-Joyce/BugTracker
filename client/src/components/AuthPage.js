@@ -37,8 +37,8 @@ const calculateStrength = (password) => {
 };
 
 function AuthPage() {
-    const { login } = useAuth();
     const navigate = useNavigate();
+    const { login } = useAuth();
     const [view, setView] = useState('signin'); // signin | signup | forgot | pending | reset
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
@@ -93,7 +93,7 @@ function AuthPage() {
         }
 
         if (verified !== null || reset_token !== null) {
-            window.history.replaceState({}, '', '/');
+            navigate('/signin', { replace: true });
         }
     }, []);
 
@@ -146,7 +146,7 @@ function AuthPage() {
                 return;
             }
             login(data.user, data.token);
-            navigate('/app/bugs');
+            navigate(data.user.mustChangePassword ? '/force-password-change' : '/app/bugs');
         } catch {
             setError('Connection error. Is the server running?');
         }
@@ -209,7 +209,7 @@ function AuthPage() {
                     confirmPassword: signupConfirm,
                     name: signupName,
                     companyName: signupCompany,
-                    jobTitle: signupJobTitle,
+                    jobTitle: signupJobTitle
                 })
             });
             const data = await res.json();

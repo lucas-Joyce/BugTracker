@@ -57,7 +57,7 @@
 >>> ### *2.1.3* Profile Management
 >>> - [✔] &nbsp; &nbsp; *1.*  Users should be able to view and edit their personal information and preferences.<br>
 >>> - [✔] &nbsp; &nbsp; *2.*  Users should be able to change their password.<br>
->>> - [ ] &nbsp; &nbsp; *3.*  The system should allow administrators to manage user accounts, including enabling and disabling user accounts.<br>
+>>> - [✔] &nbsp; &nbsp; *3.*  The system should allow administrators to manage user accounts, including enabling and disabling user accounts.<br>
 >> 
 >> ## *2.2* Content Management
 >> - - - - 
@@ -95,15 +95,15 @@
 >> ## *3.1* Architecture Diagram
 >> - - - -
 >>> ### *3.1.1* System Architecture
->>> - [ ] &nbsp; &nbsp; *1.* The bug tracking system should consist of a front-end user interface, a back-end database, and an API for communication between the two.<br>
->>> - [ ] &nbsp; &nbsp; *2.* The front-end user interface should be developed using HTML, CSS, and JavaScript.<br>
->>> - [ ] &nbsp; &nbsp; *3.* The back-end database should be developed using MySQL or a similar database management system.<br>
+>>> - [✔] &nbsp; &nbsp; *1.* The bug tracking system should consist of a front-end user interface, a back-end database, and an API for communication between the two.<br>
+>>> - [✔] &nbsp; &nbsp; *2.* The front-end user interface should be developed using HTML, CSS, and JavaScript.<br>
+>>> - [✔] &nbsp; &nbsp; *3.* The back-end database should be developed using MySQL or a similar database management system.<br>
 >>> - [ ] &nbsp; &nbsp; *4.* The API should be developed using RESTful API design principles.<br>
 >>
 >>> ### *3.1.2* Component Diagram
 >>> - [ ] &nbsp; &nbsp; *1.* The bug tracking system should consist of the following components:<br>
->>>     - [ ] - Login page <br>
->>>     - [ ] - Dashboard <br>
+>>>     - [✔] - Login page <br>
+>>>     - [✔] - Dashboard <br>
 >>>     - [ ] - Bug report management page <br>
 >>>     - [ ] - Comment management page <br>
 >>>     - [ ] - Activity log page <br>
