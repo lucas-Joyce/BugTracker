@@ -56,7 +56,7 @@ router.post('/invite', verifyToken, requireRole('owner', 'customer'), async (req
         }
 
         // Build display code: #usernameprefix + random6hex + user + count
-        const customer = await User.findById(customerId).select('username');
+        const customer = await User.findById(customerId).select('username companyName');
         const prefix = customer.username.slice(0, 6).toLowerCase().replace(/[^a-z0-9]/g, '');
         const rand = crypto.randomBytes(3).toString('hex');
         const userCount = (await User.countDocuments({ managedBy: customerId, role: 'user' })) + 1;
@@ -69,7 +69,7 @@ router.post('/invite', verifyToken, requireRole('owner', 'customer'), async (req
             username,
             password: code,           // pre-save hook hashes this
             name: '',
-            companyName: '',
+            companyName: customer.companyName || '',
             jobTitle: '',
             role: 'user',
             jobRole,

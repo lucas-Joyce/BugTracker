@@ -9,7 +9,7 @@ const userRoutes = require('./routes/user');
 const usersRoutes = require('./routes/users');
 const adminRoutes = require('./routes/admin');
 const ownerRoutes = require('./routes/owner');
-const { verifyToken } = require('./middleware/auth');
+const bugRoutes  = require('./routes/bugs');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -29,16 +29,6 @@ mongoose.connect('mongodb://localhost:27017/bugtracker')
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.error('MongoDB error:', err));
 
-// Bug schema
-const bugSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    status: { type: String, default: 'Open' },
-    priority: { type: String, default: 'Medium' },
-    createdAt: { type: Date, default: Date.now }
-});
-
-const Bug = mongoose.model('Bug', bugSchema);
-
 // Public routes
 app.use('/api/auth', authRoutes);
 
@@ -54,30 +44,11 @@ app.use('/api/admin', adminRoutes);
 // Owner-only routes
 app.use('/api/owner', ownerRoutes);
 
+// Bug routes (project-scoped)
+app.use('/api/bugs', bugRoutes);
+
 app.get('/', (_req, res) => {
     res.send('Bug tracker API');
-});
-
-// Protected bug routes
-app.get('/api/bugs', verifyToken, async (_req, res) => {
-    const bugs = await Bug.find();
-    res.json(bugs);
-});
-
-app.post('/api/bugs', verifyToken, async (req, res) => {
-    const bug = new Bug(req.body);
-    await bug.save();
-    res.status(201).json(bug);
-});
-
-app.put('/api/bugs/:id', verifyToken, async (req, res) => {
-    const bug = await Bug.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    res.json(bug);
-});
-
-app.delete('/api/bugs/:id', verifyToken, async (req, res) => {
-    await Bug.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Bug deleted' });
 });
 
 app.listen(port, () => {

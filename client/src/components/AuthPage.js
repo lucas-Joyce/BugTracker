@@ -335,7 +335,7 @@ function AuthPage() {
                     <div className="form-group">
                         <input
                             type="text"
-                            placeholder="Email address or User ID"
+                            placeholder="Username or Email address"
                             value={loginEmail}
                             onChange={(e) => setLoginEmail(e.target.value)}
                             required

@@ -181,6 +181,18 @@
     flex: 1;
 }
 
+.acc-field-ok  { color: #4caf50; font-size: 12px; margin-top: 3px; display: block; }
+.acc-field-err { color: #d32f2f; font-size: 12px; margin-top: 3px; display: block; }
+
+.acc-required { color: #d32f2f; }
+
+.acc-readonly-value {
+    display: block;
+    padding: 6px 0;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
 /* ── Subsections (Change Password / Change Email) ──────────── */
 
 .acc-subsection {

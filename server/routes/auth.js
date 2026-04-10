@@ -161,11 +161,11 @@ async function validateCredentials(req, res) {
         return null;
     }
 
-    // Allow login with email or username
+    // Allow login with username (primary) or full email address (backup)
     const user = await User.findOne({
         $or: [
-            { email: email.toLowerCase() },
-            { username: email }
+            { username: email },
+            { email: email.toLowerCase() }
         ]
     });
 

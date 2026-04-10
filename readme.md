@@ -62,7 +62,7 @@
 >> ## *2.2* Content Management
 >> - - - - 
 >>> ### *2.2.1* Bug Report Management
->>> - [ ] &nbsp; &nbsp; *1.* Users should be able to create, view, edit, and delete bug reports.<br>
+>>> - [✔] &nbsp; &nbsp; *1.* Users should be able to create, view, edit, and delete bug reports.<br>
 >>> - [ ] &nbsp; &nbsp; *2.* Bug reports should include a title, description, and attachments such as screenshots or log files.<br>
 >>> - [ ] &nbsp; &nbsp; *3.* Users should be able to assign severity levels to bug reports.<br>
 >>> - [ ] &nbsp; &nbsp; *4.* Users should be able to categorize bug reports by type, such as UI bugs, functionality bugs, performance bugs, etc.<br>

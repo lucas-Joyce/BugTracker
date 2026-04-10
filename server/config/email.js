@@ -46,7 +46,7 @@ const sendVerificationEmail = async (toEmail, token) => {
 };
 
 const sendPasswordResetEmail = async (toEmail, token) => {
-    const resetUrl = `${process.env.CLIENT_URL}?reset_token=${token}`;
+    const resetUrl = `${process.env.CLIENT_URL}/signin?reset_token=${token}`;
     const transport = await getTransporter();
 
     const info = await transport.sendMail({

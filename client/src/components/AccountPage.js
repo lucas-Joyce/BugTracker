@@ -29,6 +29,7 @@ const API = 'http://localhost:5000';
 
 function AccountPage() {
     const { token, currentUser, updateUser } = useAuth();
+    const isUser = currentUser?.role === 'user';
     const navigate = useNavigate();
     const [avatarOpen, setAvatarOpen] = useState(false);
     const [settingsOpen, setSettingsOpen] = useState(false);
@@ -56,6 +57,7 @@ function AccountPage() {
     const [showCurrentPassword, setShowCurrentPassword] = useState(false);
 
     const [newEmail, setNewEmail] = useState('');
+    const [usernameAvailable, setUsernameAvailable] = useState(null);
 
     const authHeaders = {
         'Content-Type': 'application/json',
@@ -108,6 +110,8 @@ function AccountPage() {
     const handleSaveProfile = async (e) => {
         e.preventDefault();
         setError(''); setSuccess('');
+        if (!name.trim()) { setError('Full name is required.'); return; }
+        if (!isUser && !companyName.trim()) { setError('Company name is required.'); return; }
         setSaving(true);
         try {
             const res = await fetch(`${API}/api/user/profile`, {
@@ -202,6 +206,44 @@ function AccountPage() {
         setSaving(false);
     };
 
+    const checkUsernameAvailable = async (value) => {
+        if (value.length < 2 || value === profile?.username) {
+            setUsernameAvailable(null);
+            return;
+        }
+        try {
+            const res = await fetch(`${API}/api/auth/check-username/${value}`);
+            const data = await res.json();
+            setUsernameAvailable(data.available);
+        } catch {
+            setUsernameAvailable(null);
+        }
+    };
+
+    const handleSaveUsername = async () => {
+        if (!username.trim() || username === profile?.username) return;
+        if (usernameAvailable === false) return;
+        setError(''); setSuccess('');
+        setSaving(true);
+        try {
+            const res = await fetch(`${API}/api/user/profile`, {
+                method: 'PUT',
+                headers: authHeaders,
+                body: JSON.stringify({ username })
+            });
+            const data = await res.json();
+            if (!res.ok) { setError(data.message); }
+            else {
+                setSuccess('Username updated');
+                setUsernameAvailable(null);
+                updateUser({ username });
+            }
+        } catch {
+            setError('Connection error');
+        }
+        setSaving(false);
+    };
+
     if (loading) return <div className="account-loading">Loading profile...</div>;
 
     const initials = name ? name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) : '?';
@@ -245,7 +287,7 @@ function AccountPage() {
                     {avatarOpen && (
                         <form className="acc-card-body" onSubmit={handleSaveProfile}>
                             <div className="acc-field">
-                                <label>Full Name</label>
+                                <label>Full Name <span className="acc-required">*</span></label>
                                 <input value={name} onChange={e => setName(e.target.value)} required />
                             </div>
                             <div className="acc-field">
@@ -257,8 +299,14 @@ function AccountPage() {
                                 <input value={jobTitle} onChange={e => setJobTitle(e.target.value)} />
                             </div>
                             <div className="acc-field">
-                                <label>Company Name</label>
-                                <input value={companyName} onChange={e => setCompanyName(e.target.value)} />
+                                <label>
+                                    Company Name
+                                    {!isUser && <span className="acc-required"> *</span>}
+                                </label>
+                                {isUser
+                                    ? <span className="acc-readonly-value">{companyName || '—'}</span>
+                                    : <input value={companyName} onChange={e => setCompanyName(e.target.value)} required />
+                                }
                             </div>
                             <div className="acc-card-actions">
                                 <button type="submit" className="save-btn" disabled={saving}>
@@ -300,9 +348,28 @@ function AccountPage() {
                                 <label>Member Since</label>
                                 <span>{profile?.createdAt ? new Date(profile.createdAt).toLocaleDateString() : '—'}</span>
                             </div>
-                            <div className="acc-field acc-field--readonly">
-                                <label>User ID</label>
-                                <span>{username}</span>
+                            <div className="acc-field">
+                                <label>Username (User ID)</label>
+                                <div className="acc-field-inline">
+                                    <input
+                                        value={username}
+                                        onChange={e => {
+                                            setUsername(e.target.value);
+                                            checkUsernameAvailable(e.target.value);
+                                        }}
+                                        placeholder="Username"
+                                    />
+                                    <button
+                                        type="button"
+                                        className="save-btn save-btn--sm"
+                                        disabled={saving || usernameAvailable === false || username === profile?.username}
+                                        onClick={handleSaveUsername}
+                                    >
+                                        Save
+                                    </button>
+                                </div>
+                                {usernameAvailable === true  && <span className="acc-field-ok">Available</span>}
+                                {usernameAvailable === false && <span className="acc-field-err">Already taken</span>}
                             </div>
                             <div className="acc-field">
                                 <label>Mobile Number</label>

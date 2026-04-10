@@ -9,7 +9,9 @@ function TeamTable({ users, onAction, actionLoading }) {
         <table className="admin-table">
             <thead>
                 <tr>
+                    <th>Full Name</th>
                     <th>Username</th>
+                    <th>Nickname</th>
                     <th>Email</th>
                     <th>Role</th>
                     <th>Status</th>
@@ -20,7 +22,9 @@ function TeamTable({ users, onAction, actionLoading }) {
             <tbody>
                 {users.map(user => (
                     <tr key={user._id}>
+                        <td>{user.name || '—'}</td>
                         <td>{user.username}</td>
+                        <td>{user.nickname || '—'}</td>
                         <td>{user.email}</td>
                         <td><span className={`role-badge ${user.jobRole}`}>{user.jobRole}</span></td>
                         <td><span className={`status-badge ${user.status}`}>{user.status}</span></td>

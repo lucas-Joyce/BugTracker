@@ -20,7 +20,9 @@ function ViewerTable({ users, onAction, actionLoading }) {
         <table className="admin-table">
             <thead>
                 <tr>
+                    <th>Full Name</th>
                     <th>Username</th>
+                    <th>Nickname</th>
                     <th>Email</th>
                     <th>Status</th>
                     <th>Joined</th>
@@ -31,7 +33,9 @@ function ViewerTable({ users, onAction, actionLoading }) {
             <tbody>
                 {users.map(user => (
                     <tr key={user._id} className={user.status === 'expired' ? 'row-expired' : ''}>
+                        <td>{user.name || '—'}</td>
                         <td>{user.username}</td>
+                        <td>{user.nickname || '—'}</td>
                         <td>{user.email}</td>
                         <td><span className={`status-badge ${user.status}`}>{user.status}</span></td>
                         <td>{new Date(user.createdAt).toLocaleDateString()}</td>

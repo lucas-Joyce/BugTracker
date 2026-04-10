@@ -3,6 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const User = require('../models/User');
+const Project = require('../models/Project');
 const { verifyToken } = require('../middleware/auth');
 const { sendExtensionRequestEmail } = require('../config/email');
 
@@ -31,9 +32,20 @@ const upload = multer({
 // GET /api/user/profile
 router.get('/profile', verifyToken, async (req, res) => {
     try {
-        const user = await User.findById(req.user.userId).select('-password -verificationToken -verificationExpires -resetPasswordToken -resetPasswordExpires');
+        const user = await User.findById(req.user.userId)
+            .select('-password -verificationToken -verificationExpires -resetPasswordToken -resetPasswordExpires')
+            .populate('managedBy', 'companyName');
         if (!user) return res.status(404).json({ message: 'User not found' });
-        res.json(user);
+
+        const profile = user.toObject();
+        // For regular users always reflect the managing customer's company name
+        if (user.role === 'user' && user.managedBy?.companyName) {
+            profile.companyName = user.managedBy.companyName;
+        }
+        // Don't leak the full managedBy object — just keep the id
+        if (profile.managedBy) profile.managedBy = user.managedBy._id;
+
+        res.json(profile);
     } catch (err) {
         res.status(500).json({ message: 'Server error' });
     }
@@ -171,6 +183,19 @@ router.post('/set-password', verifyToken, async (req, res) => {
         res.json({ message: 'Password updated. You can now use the app.' });
     } catch (err) {
         console.error('Set password error:', err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// GET /api/user/projects — projects this user is deployed into (role=user only)
+router.get('/projects', verifyToken, async (req, res) => {
+    try {
+        const projects = await Project.find({ members: req.user.userId })
+            .populate('members', 'name username jobRole status')
+            .sort({ createdAt: -1 });
+        res.json({ projects });
+    } catch (err) {
+        console.error('Get user projects error:', err);
         res.status(500).json({ message: 'Server error' });
     }
 });

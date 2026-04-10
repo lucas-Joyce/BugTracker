@@ -134,3 +134,190 @@ td select {
   padding: 4px 6px;
   border-radius: 3px;
 }
+
+/* ── TkBug ──────────────────────────────────────────── */
+.TkBug {
+  padding: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.tkbug-header {
+  margin-bottom: 20px;
+}
+
+.tkbug-header h2 {
+  margin: 0 0 14px 0;
+  font-size: 22px;
+  letter-spacing: 0.5px;
+}
+
+/* Project tabs */
+.tkbug-project-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tkbug-tab {
+  padding: 7px 18px;
+  background-color: var(--bg-alt);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.tkbug-tab:hover {
+  background-color: var(--btn-bg-hover);
+  color: var(--header-text);
+  border-color: var(--btn-bg-hover);
+}
+
+.tkbug-tab.active {
+  background-color: var(--btn-bg);
+  color: var(--header-text);
+  border-color: var(--btn-bg);
+}
+
+/* Body — sidebar + main */
+.tkbug-body {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+/* Members sidebar */
+.tkbug-members {
+  width: 180px;
+  flex-shrink: 0;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px;
+}
+
+.tkbug-members h4 {
+  margin: 0 0 12px 0;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-muted);
+}
+
+.tkbug-member {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.tkbug-member:last-child {
+  border-bottom: none;
+}
+
+.tkbug-member-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.tkbug-member-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  display: inline-block;
+  width: fit-content;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.tkbug-badge-coder  { background-color: #1565c0; color: #fff; }
+.tkbug-badge-tester { background-color: #6a1b9a; color: #fff; }
+.tkbug-badge-viewer { background-color: #2e7d32; color: #fff; }
+
+/* Main content */
+.tkbug-main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Bug table */
+.tkbug-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.tkbug-table th,
+.tkbug-table td {
+  border: 1px solid var(--border);
+  padding: 11px 14px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.tkbug-table th {
+  background-color: var(--header-bg);
+  color: var(--header-text);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.tkbug-table tr:nth-child(even) {
+  background-color: var(--bg-alt);
+}
+
+.tkbug-table td button {
+  margin-right: 5px;
+  padding: 5px 10px;
+  font-size: 12px;
+  background-color: var(--btn-bg);
+  color: var(--header-text);
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.tkbug-table td button:hover {
+  background-color: var(--btn-bg-hover);
+}
+
+.tkbug-table td button:last-child {
+  background-color: #d32f2f;
+}
+
+.tkbug-table td button:last-child:hover {
+  background-color: #b71c1c;
+}
+
+.tkbug-table td select {
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  border: 1px solid var(--border);
+  padding: 4px 6px;
+  border-radius: 3px;
+}
+
+/* Utility */
+.tkbug-error {
+  background-color: #fdecea;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+  border-radius: 4px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.tkbug-empty,
+.tkbug-no-projects {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-top: 8px;
+}

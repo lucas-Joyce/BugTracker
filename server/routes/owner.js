@@ -49,6 +49,19 @@ router.patch('/customers/:id/status', verifyToken, requireRole('owner'), async (
         target.status = status;
         await target.save();
 
+        // Cascade to all users managed by this customer
+        if (status === 'revoked') {
+            await User.updateMany(
+                { managedBy: target._id, status: { $in: ['active', 'pending'] } },
+                { $set: { status: 'revoked' } }
+            );
+        } else if (status === 'active') {
+            await User.updateMany(
+                { managedBy: target._id, status: 'revoked' },
+                { $set: { status: 'active' } }
+            );
+        }
+
         if (status === 'active') {
             sendActivationEmail(target.email, target.username).catch(err =>
                 console.error('Activation email failed:', err.message)
