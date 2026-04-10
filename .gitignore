@@ -13,6 +13,18 @@ server/.env
 client/.env
 
 # SSL certificates
-server/certs/DEVLOG.md
+server/certs/
+
+# Uploaded files
+server/uploads/
+
+# Env variants
+.env.local
+.env.production
+.env.development
+
+# OS
+.DS_Store
+
 assetment.md
 DEVLOG.md
