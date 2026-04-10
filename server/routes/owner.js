@@ -12,7 +12,26 @@ router.get('/customers', verifyToken, requireRole('owner'), async (req, res) => 
             .select('-password -verificationToken -verificationExpires -resetPasswordToken -resetPasswordExpires')
             .sort({ createdAt: -1 });
 
-        // Global counts across all customers (pending + active count toward slots)
+        // Per-customer user counts (active + pending)
+        const userCounts = await User.aggregate([
+            {
+                $match: {
+                    role: 'user',
+                    status: { $in: ['active', 'pending'] },
+                    managedBy: { $in: customers.map(c => c._id) }
+                }
+            },
+            { $group: { _id: '$managedBy', count: { $sum: 1 } } }
+        ]);
+        const countMap = Object.fromEntries(userCounts.map(r => [r._id.toString(), r.count]));
+
+        const customersWithCount = customers.map(c => ({
+            ...c.toObject(),
+            userCount: countMap[c._id.toString()] || 0,
+            userMax: 20  // 5 coders + 5 testers + 10 viewers
+        }));
+
+        // Global counts across all customers
         const allUsers = await User.find({
             role: 'user',
             status: { $in: ['active', 'pending'] }
@@ -25,7 +44,7 @@ router.get('/customers', verifyToken, requireRole('owner'), async (req, res) => 
             total:   allUsers.length,
         };
 
-        res.json({ customers, stats });
+        res.json({ customers: customersWithCount, stats });
     } catch (err) {
         console.error('Owner get customers error:', err);
         res.status(500).json({ message: 'Server error' });

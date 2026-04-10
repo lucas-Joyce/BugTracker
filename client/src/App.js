@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
@@ -21,7 +21,29 @@ const BugList = lazy(() => import('./components/BugList'));
 // Renders the correct dashboard based on role
 function AdminGate() {
     const { currentUser } = useAuth();
-    if (currentUser?.role === 'owner')    return <OwnerDashboard />;
+    const [ownerTab, setOwnerTab] = useState('owner');
+
+    if (currentUser?.role === 'owner') {
+        return (
+            <div>
+                <div className="owner-gate-tabs">
+                    <button
+                        className={`owner-gate-tab${ownerTab === 'owner' ? ' active' : ''}`}
+                        onClick={() => setOwnerTab('owner')}
+                    >
+                        Customers
+                    </button>
+                    <button
+                        className={`owner-gate-tab${ownerTab === 'team' ? ' active' : ''}`}
+                        onClick={() => setOwnerTab('team')}
+                    >
+                        My Team
+                    </button>
+                </div>
+                {ownerTab === 'owner' ? <OwnerDashboard /> : <AdminDashboard />}
+            </div>
+        );
+    }
     if (currentUser?.role === 'customer') return <AdminDashboard />;
     return <Navigate to="/app/bugs" replace />;
 }

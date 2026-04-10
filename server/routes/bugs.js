@@ -24,7 +24,9 @@ router.get('/', verifyToken, async (req, res) => {
         const project = await getAccessibleProject(projectId, req.user.userId);
         if (!project) return res.status(403).json({ message: 'Access denied' });
 
-        const bugs = await Bug.find({ project: projectId }).sort({ createdAt: -1 });
+        const bugs = await Bug.find({ project: projectId })
+            .populate('createdBy', 'nickname name username')
+            .sort({ createdAt: -1 });
         res.json(bugs);
     } catch (err) {
         console.error('Get bugs error:', err);
@@ -35,19 +37,29 @@ router.get('/', verifyToken, async (req, res) => {
 // POST /api/bugs
 router.post('/', verifyToken, async (req, res) => {
     try {
-        const { title, priority, project: projectId } = req.body;
+        const {
+            title, description, severity, priority, bugType,
+            stepsToReproduce, actualResult, expectedResult,
+            project: projectId
+        } = req.body;
+
         if (!projectId) return res.status(400).json({ message: 'project is required' });
+        if (!title || !description || !stepsToReproduce || !actualResult || !expectedResult) {
+            return res.status(400).json({ message: 'title, description, steps, actual result and expected result are required' });
+        }
 
         const project = await getAccessibleProject(projectId, req.user.userId);
         if (!project) return res.status(403).json({ message: 'Access denied' });
 
         const bug = await Bug.create({
-            title,
-            priority: priority || 'Medium',
+            title, description, severity, priority, bugType,
+            stepsToReproduce, actualResult, expectedResult,
             project:   projectId,
             createdBy: req.user.userId
         });
-        res.status(201).json(bug);
+
+        const populated = await Bug.findById(bug._id).populate('createdBy', 'nickname name username');
+        res.status(201).json(populated);
     } catch (err) {
         console.error('Create bug error:', err);
         res.status(500).json({ message: 'Server error' });
@@ -63,7 +75,12 @@ router.put('/:id', verifyToken, async (req, res) => {
         const project = await getAccessibleProject(bug.project.toString(), req.user.userId);
         if (!project) return res.status(403).json({ message: 'Access denied' });
 
-        const updated = await Bug.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        // Prevent overwriting immutable fields
+        const { project: _p, createdBy: _c, createdAt: _ca, ...updates } = req.body;
+        updates.updatedAt = new Date();
+
+        const updated = await Bug.findByIdAndUpdate(req.params.id, updates, { new: true })
+            .populate('createdBy', 'nickname name username');
         res.json(updated);
     } catch (err) {
         console.error('Update bug error:', err);

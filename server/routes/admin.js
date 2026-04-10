@@ -43,16 +43,18 @@ router.post('/invite', verifyToken, requireRole('owner', 'customer'), async (req
 
         const customerId = req.user.userId;
 
-        // Cap check
-        const cap = jobRole === 'coder' ? CODER_CAP : jobRole === 'tester' ? TESTER_CAP : VIEWER_CAP;
-        const used = await User.countDocuments({
-            managedBy: customerId,
-            role: 'user',
-            jobRole,
-            status: { $in: ['active', 'pending'] }
-        });
-        if (used >= cap) {
-            return res.status(400).json({ message: `${jobRole} limit reached (max ${cap})` });
+        // Cap check — owner is exempt
+        if (req.user.role !== 'owner') {
+            const cap = jobRole === 'coder' ? CODER_CAP : jobRole === 'tester' ? TESTER_CAP : VIEWER_CAP;
+            const used = await User.countDocuments({
+                managedBy: customerId,
+                role: 'user',
+                jobRole,
+                status: { $in: ['active', 'pending'] }
+            });
+            if (used >= cap) {
+                return res.status(400).json({ message: `${jobRole} limit reached (max ${cap})` });
+            }
         }
 
         // Build display code: #usernameprefix + random6hex + user + count
@@ -267,9 +269,12 @@ router.post('/projects', verifyToken, requireRole('owner', 'customer'), async (r
             return res.status(400).json({ message: 'Project name is required' });
         }
 
-        const count = await Project.countDocuments({ createdBy: req.user.userId });
-        if (count >= PROJECT_CAP) {
-            return res.status(400).json({ message: `Project limit reached (max ${PROJECT_CAP})` });
+        // Project cap — owner is exempt
+        if (req.user.role !== 'owner') {
+            const count = await Project.countDocuments({ createdBy: req.user.userId });
+            if (count >= PROJECT_CAP) {
+                return res.status(400).json({ message: `Project limit reached (max ${PROJECT_CAP})` });
+            }
         }
 
         const project = await Project.create({

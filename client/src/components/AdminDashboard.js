@@ -244,6 +244,11 @@ function AdminDashboard() {
             {activeTab === 'users' && (
                 <>
                     <div className="slot-counters">
+                        <SlotCounter
+                            used={stats.coders.used + stats.testers.used + stats.viewers.used}
+                            max={stats.coders.max + stats.testers.max + stats.viewers.max}
+                            label="Users"
+                        />
                         <SlotCounter used={stats.coders.used}  max={stats.coders.max}  label="Coders" />
                         <SlotCounter used={stats.testers.used} max={stats.testers.max} label="Testers" />
                         <SlotCounter used={stats.viewers.used} max={stats.viewers.max} label="Viewers" />

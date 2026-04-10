@@ -253,6 +253,38 @@
 
 .remind-sent { font-size: 0.82rem; color: #2e7d32; font-style: italic; }
 
+.user-count { font-size: 0.9rem; font-weight: 600; color: var(--text); }
+
+/* Owner gate tab switcher */
+.owner-gate-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 0;
+    padding: 0 24px;
+    background-color: var(--bg-surface);
+}
+
+.owner-gate-tab {
+    padding: 12px 24px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.owner-gate-tab:hover { color: var(--text); }
+
+.owner-gate-tab.active {
+    color: var(--text);
+    border-bottom-color: var(--btn-bg);
+}
+
 .admin-empty { color: #999; font-style: italic; padding: 12px 0; }
 
 /* Invite modal */

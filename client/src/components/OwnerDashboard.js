@@ -177,6 +177,7 @@ function CustomerTable({ customers, onAction, actionLoading, onRemind, remindLoa
                     <th>Company</th>
                     <th>Email</th>
                     <th>Username</th>
+                    <th>Users</th>
                     <th>Status</th>
                     <th>Registered</th>
                     <th>Action</th>
@@ -192,6 +193,7 @@ function CustomerTable({ customers, onAction, actionLoading, onRemind, remindLoa
                             <td>{c.companyName}</td>
                             <td>{c.email}</td>
                             <td>{c.username}</td>
+                            <td><span className="user-count">{c.userCount}/{c.userMax}</span></td>
                             <td><span className={`status-badge ${badge.cls}`}>{badge.label}</span></td>
                             <td>{new Date(c.createdAt).toLocaleDateString()}</td>
                             <td className="action-cell">

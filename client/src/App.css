@@ -321,3 +321,224 @@ td select {
   font-size: 13px;
   margin-top: 8px;
 }
+
+/* TkBug toolbar */
+.tkbug-toolbar {
+  margin-bottom: 14px;
+}
+
+.tkbug-add-btn {
+  padding: 8px 18px;
+  background-color: var(--btn-bg);
+  color: var(--header-text);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.tkbug-add-btn:hover { background-color: var(--btn-bg-hover); }
+
+/* Bug badges */
+.bug-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+}
+
+.bug-sev-low      { background: #e8f5e9; color: #2e7d32; }
+.bug-sev-medium   { background: #fff3e0; color: #e65100; }
+.bug-sev-high     { background: #fce4ec; color: #c62828; }
+.bug-sev-critical { background: #7b1fa2; color: #fff; }
+
+.bug-priority-low    { background: #e3f2fd; color: #1565c0; }
+.bug-priority-medium { background: #fff3e0; color: #e65100; }
+.bug-priority-high   { background: #fce4ec; color: #c62828; }
+
+.bug-status-open     { background: #e3f2fd; color: #1565c0; }
+.bug-status-progress { background: #fff3e0; color: #e65100; }
+.bug-status-closed   { background: #e8f5e9; color: #2e7d32; }
+
+.bug-type { background: var(--bg-alt); color: var(--text-muted); }
+
+/* Bug modal */
+.bug-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.bug-modal {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.bug-modal--detail { max-width: 680px; }
+
+.bug-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 24px 14px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--bg-surface);
+}
+
+.bug-modal-header h2 { margin: 0; font-size: 18px; }
+
+.bug-modal-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.bug-modal-close:hover { background: var(--bg-alt); color: var(--text); }
+
+.bug-modal-body {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bug-modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bug-modal-field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.bug-modal-field input,
+.bug-modal-field textarea,
+.bug-modal-field select {
+  background: var(--input-bg);
+  color: var(--input-text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 8px 10px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.bug-modal-field input:focus,
+.bug-modal-field textarea:focus,
+.bug-modal-field select:focus {
+  outline: none;
+  border-color: var(--btn-bg);
+}
+
+.bug-modal-row {
+  display: flex;
+  gap: 12px;
+}
+
+.bug-modal-row .bug-modal-field { flex: 1; }
+
+.bug-required { color: #d32f2f; }
+
+.bug-modal-error {
+  background: #fdecea;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+  border-radius: 4px;
+  padding: 10px 14px;
+  font-size: 13px;
+}
+
+.bug-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.bug-modal-btn {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.bug-modal-btn--cancel {
+  background: var(--bg-alt);
+  color: var(--text);
+}
+
+.bug-modal-btn--cancel:hover { background: var(--border); }
+
+.bug-modal-btn--submit {
+  background: var(--btn-bg);
+  color: var(--header-text);
+}
+
+.bug-modal-btn--submit:hover { background: var(--btn-bg-hover); }
+
+/* Bug detail modal */
+.bug-detail-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.bug-detail-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.bug-detail-section h4 {
+  margin: 0 0 6px 0;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+}
+
+.bug-detail-section p,
+.bug-detail-section pre {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text);
+  white-space: pre-wrap;
+  font-family: inherit;
+}
+
+.bug-detail-row {
+  display: flex;
+  gap: 24px;
+}
+
+.bug-detail-row .bug-detail-section { flex: 1; }
