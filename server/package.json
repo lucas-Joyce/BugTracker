@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "test": "jest --runInBand --forceExit"
   },
   "keywords": [],
   "author": "",
@@ -22,7 +23,10 @@
     "nodemailer": "^7.0.13"
   },
   "devDependencies": {
+    "jest": "^30.3.0",
+    "mongodb-memory-server": "^11.0.1",
     "nodemon": "^3.1.11",
-    "open": "^11.0.0"
+    "open": "^11.0.0",
+    "supertest": "^7.2.2"
   }
 }

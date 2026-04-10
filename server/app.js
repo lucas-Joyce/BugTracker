@@ -25,9 +25,11 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // MongoDB connection
-mongoose.connect('mongodb://localhost:27017/bugtracker')
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.error('MongoDB error:', err));
+if (process.env.NODE_ENV !== 'test') {
+    mongoose.connect('mongodb://localhost:27017/bugtracker')
+        .then(() => console.log('MongoDB connected'))
+        .catch(err => console.error('MongoDB error:', err));
+}
 
 // Public routes
 app.use('/api/auth', authRoutes);
@@ -51,6 +53,10 @@ app.get('/', (_req, res) => {
     res.send('Bug tracker API');
 });
 
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(port, () => {
+        console.log(`Server is running on http://localhost:${port}`);
+    });
+}
+
+module.exports = app;
