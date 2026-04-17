@@ -26,7 +26,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // MongoDB connection
 if (process.env.NODE_ENV !== 'test') {
-    mongoose.connect('mongodb://localhost:27017/bugtracker')
+    mongoose.connect(process.env.MONGODB_URI)
         .then(() => console.log('MongoDB connected'))
         .catch(err => console.error('MongoDB error:', err));
 }
