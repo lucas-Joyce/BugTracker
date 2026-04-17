@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import BugForm from './BugForm';
 import '../App.css';
 
-const API = 'http://localhost:5000';
+const API = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 const ROLE_BADGE = { coder: 'Coder', tester: 'Tester', viewer: 'Viewer' };
 

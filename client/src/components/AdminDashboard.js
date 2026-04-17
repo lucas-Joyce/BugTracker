@@ -7,7 +7,7 @@ import ViewerTable from './ViewerTable';
 import InviteModal from './InviteModal';
 import '../Admin.css';
 
-const API = 'http://localhost:5000';
+const API = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 const PROJECT_CAP = 3;
 
 function ProjectModal({ token, users, project, onClose, onSaved }) {
