@@ -1,32 +1,13 @@
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 
-let transporter = null;
-
-const getTransporter = async () => {
-    if (transporter) return transporter;
-
-    const account = await nodemailer.createTestAccount();
-    console.log('Ethereal test account created:', account.user);
-
-    transporter = nodemailer.createTransport({
-        host: account.smtp.host,
-        port: account.smtp.port,
-        secure: account.smtp.secure,
-        auth: {
-            user: account.user,
-            pass: account.pass,
-        },
-    });
-
-    return transporter;
-};
+const resend = new Resend(process.env.RESEND_API_KEY);
+const FROM = 'Bug Tracker <noreply@resend.dev>';
 
 const sendVerificationEmail = async (toEmail, token) => {
     const verifyUrl = `${process.env.SERVER_URL}/api/auth/verify-email/${token}`;
-    const transport = await getTransporter();
 
-    const info = await transport.sendMail({
-        from: '"Bug Tracker" <noreply@bugtracker.dev>',
+    await resend.emails.send({
+        from: FROM,
         to: toEmail,
         subject: 'Verify your Bug Tracker account',
         html: `
@@ -41,16 +22,13 @@ const sendVerificationEmail = async (toEmail, token) => {
             <p>${verifyUrl}</p>
         `,
     });
-
-    console.log('Verification email preview: %s', nodemailer.getTestMessageUrl(info));
 };
 
 const sendPasswordResetEmail = async (toEmail, token) => {
     const resetUrl = `${process.env.CLIENT_URL}/signin?reset_token=${token}`;
-    const transport = await getTransporter();
 
-    const info = await transport.sendMail({
-        from: '"Bug Tracker" <noreply@bugtracker.dev>',
+    await resend.emails.send({
+        from: FROM,
         to: toEmail,
         subject: 'Reset your Bug Tracker password',
         html: `
@@ -65,17 +43,14 @@ const sendPasswordResetEmail = async (toEmail, token) => {
             <p>${resetUrl}</p>
         `,
     });
-
-    console.log('Password reset email preview: %s', nodemailer.getTestMessageUrl(info));
 };
 
 const sendOwnerNotification = async (username, userEmail, role) => {
     const ownerEmail = process.env.OWNER_EMAIL;
     if (!ownerEmail) return;
-    const transport = await getTransporter();
 
-    const info = await transport.sendMail({
-        from: '"Bug Tracker" <noreply@bugtracker.dev>',
+    await resend.emails.send({
+        from: FROM,
         to: ownerEmail,
         subject: 'New user pending activation',
         html: `
@@ -89,15 +64,11 @@ const sendOwnerNotification = async (username, userEmail, role) => {
             <p style="margin-top:16px;">Log in to the admin dashboard to activate or revoke this account.</p>
         `,
     });
-
-    console.log('Owner notification preview: %s', nodemailer.getTestMessageUrl(info));
 };
 
 const sendActivationEmail = async (toEmail, username) => {
-    const transport = await getTransporter();
-
-    const info = await transport.sendMail({
-        from: '"Bug Tracker" <noreply@bugtracker.dev>',
+    await resend.emails.send({
+        from: FROM,
         to: toEmail,
         subject: 'Your Bug Tracker account has been activated',
         html: `
@@ -110,16 +81,11 @@ const sendActivationEmail = async (toEmail, username) => {
             </a>
         `,
     });
-
-    console.log('Activation email preview: %s', nodemailer.getTestMessageUrl(info));
 };
 
 const sendInviteEmail = async (toEmail, code, jobRole) => {
-    const loginUrl = process.env.CLIENT_URL;
-    const transport = await getTransporter();
-
-    const info = await transport.sendMail({
-        from: '"Bug Tracker" <noreply@bugtracker.dev>',
+    await resend.emails.send({
+        from: FROM,
         to: toEmail,
         subject: "You've been invited to join Bug Tracker",
         html: `
@@ -136,7 +102,7 @@ const sendInviteEmail = async (toEmail, code, jobRole) => {
                     <td><strong>${code}</strong></td>
                 </tr>
             </table>
-            <a href="${loginUrl}"
+            <a href="${process.env.CLIENT_URL}"
                style="display:inline-block;padding:12px 24px;background:#333;color:#fff;text-decoration:none;border-radius:4px;">
                Sign In
             </a>
@@ -145,15 +111,11 @@ const sendInviteEmail = async (toEmail, code, jobRole) => {
             </p>
         `,
     });
-
-    console.log('Invite email preview: %s', nodemailer.getTestMessageUrl(info));
 };
 
 const sendExtensionRequestEmail = async (customerEmail, viewerUsername) => {
-    const transport = await getTransporter();
-
-    const info = await transport.sendMail({
-        from: '"Bug Tracker" <noreply@bugtracker.dev>',
+    await resend.emails.send({
+        from: FROM,
         to: customerEmail,
         subject: 'Viewer access extension request',
         html: `
@@ -162,26 +124,28 @@ const sendExtensionRequestEmail = async (customerEmail, viewerUsername) => {
             <p>Log in to your Admin Dashboard to review and re-activate their account.</p>
         `,
     });
-
-    console.log('Extension request email preview: %s', nodemailer.getTestMessageUrl(info));
 };
 
 const sendPendingReminderEmail = async (toEmail, username) => {
-    const transport = await getTransporter();
-
-    const info = await transport.sendMail({
-        from: '"Bug Tracker" <noreply@bugtracker.dev>',
+    await resend.emails.send({
+        from: FROM,
         to: toEmail,
         subject: 'Your Bug Tracker application is under review',
         html: `
             <h2>Application Received</h2>
             <p>Hi <strong>${username}</strong>,</p>
-            <p>We wanted to let you know that your Bug Tracker account application is currently under review.</p>
-            <p>You will receive another email once your account has been approved. Thank you for your patience.</p>
+            <p>Your Bug Tracker account application is currently under review.</p>
+            <p>You will receive another email once your account has been approved.</p>
         `,
     });
-
-    console.log('Pending reminder email preview: %s', nodemailer.getTestMessageUrl(info));
 };
 
-module.exports = { sendVerificationEmail, sendPasswordResetEmail, sendOwnerNotification, sendActivationEmail, sendPendingReminderEmail, sendInviteEmail, sendExtensionRequestEmail };
+module.exports = {
+    sendVerificationEmail,
+    sendPasswordResetEmail,
+    sendOwnerNotification,
+    sendActivationEmail,
+    sendPendingReminderEmail,
+    sendInviteEmail,
+    sendExtensionRequestEmail
+};

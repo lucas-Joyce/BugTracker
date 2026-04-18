@@ -1,0 +1,10 @@
+https://bugtracker-api-gmm5.onrender.com/
+
+Option B — Proper fix (fix the ESLint issues in code)
+In VSCode fix each file flagged:
+AdminDashboard.js line 162 — add the missing deps:
+jsuseEffect(() => {
+  fetchProjects();
+  fetchUsers();
+}, [fetchProjects, fetchUsers])  // add these
+Same pattern for AuthPage.js and OwnerDashboard.js.
